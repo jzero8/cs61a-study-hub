@@ -1,0 +1,2015 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CS 61A 課程地圖</title>
+<meta name="description" content="UC Berkeley CS 61A (Fall 2026) study hub: course mind map, exam guide and practice questions.">
+<meta name="theme-color" content="#003262">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23003262'/%3E%3Ctext x='16' y='21' font-family='monospace' font-size='12' font-weight='700' text-anchor='middle' fill='%23fdb515'%3E61A%3C/text%3E%3C/svg%3E">
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/bricolage-grotesque-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:800;font-display:swap;src:url(fonts/bricolage-grotesque-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/jetbrains-mono-latin-600-normal.woff2) format("woff2")}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+body{margin:0;font-size:14px;-webkit-text-size-adjust:100%}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+/* Layout: horizontal mind map (root → units → topics with sub-points) styled like environment-diagram frames; detail panel at the side, outline view on phones */
+:root{
+  --bg:#f3f5f9;
+  --surface:#ffffff;
+  --ink:#0f1f3a;
+  --muted:#5b6782;
+  --line:#c3cbdb;
+  --blue:#003262;
+  --gold:#e0a106;
+  --gold-soft:#fdf1d2;
+  --done:#2f7d5b;
+  --done-soft:#e3f2ea;
+  --warn:#b4472f;
+  --code-bg:#eef1f7;
+  --f-display:"Bricolage Grotesque", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --f-body:"PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1424; --surface:#13203a; --ink:#e7ecf5; --muted:#9aa6bf; --line:#2c3d5e;
+    --blue:#8fb6ff; --gold:#fdb515; --gold-soft:#3a2f12; --done:#5cc796; --done-soft:#143327; --warn:#ff8f73; --code-bg:#0e1a30;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1424; --surface:#13203a; --ink:#e7ecf5; --muted:#9aa6bf; --line:#2c3d5e;
+  --blue:#8fb6ff; --gold:#fdb515; --gold-soft:#3a2f12; --done:#5cc796; --done-soft:#143327; --warn:#ff8f73; --code-bg:#0e1a30;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+.wrap{max-width:1600px;margin:0 auto;padding-inline:20px;padding-block:28px 48px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4vw,42px);line-height:1.1;margin:4px 0 6px;text-wrap:balance;color:var(--blue)}
+.lede{margin:0;color:var(--muted);max-width:66ch}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:500 13px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn:hover{border-color:var(--blue)}
+.btn[aria-pressed="true"]{border-color:var(--blue);background:var(--code-bg)}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* exam strip */
+.exams{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:20px}
+.exams h2{font:600 14px var(--f-body);margin:0 0 10px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.exams h2 small{font-weight:400;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:4px 9px;display:flex;gap:6px;align-items:baseline;font-variant-numeric:tabular-nums}
+.chip b{font-family:var(--f-mono);font-weight:600;font-size:12px}
+.chip .d{color:var(--muted);font-family:var(--f-mono);font-size:11.5px}
+.chip.past{opacity:.62}
+.chip.next{border-color:var(--gold);background:var(--gold-soft);opacity:1}
+.chip.exam b{color:var(--blue)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.dot.done{background:var(--done)}
+.dot.now{background:var(--gold)}
+.dot.next{background:transparent;border:1.5px dashed var(--muted)}
+.qb{font-family:var(--f-mono);font-size:10.5px;padding:0 5px;border-radius:3px;border:1px solid var(--gold);color:var(--ink);white-space:nowrap}
+
+/* main grid */
+.main{display:grid;grid-template-columns:minmax(0,1fr) 16px var(--pw,380px);gap:2px;align-items:stretch}
+.main > .mapbox{align-self:start}
+.resizer{cursor:col-resize;touch-action:none;display:flex;align-items:flex-start;justify-content:center;border-radius:4px;padding-top:120px}
+.resizer::before{content:"";position:sticky;top:45vh;width:4px;height:48px;border-radius:2px;background:var(--line)}
+.resizer:hover::before,.resizer:focus-visible::before,.resizer.dragging::before{background:var(--gold);height:80px}
+.resizer:hover,.resizer.dragging{background:var(--code-bg)}
+.resizer:focus-visible{outline:2px solid var(--gold)}
+body.resizing{cursor:col-resize;user-select:none}
+.dbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:-4px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.dbar-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.btn.sm{font-size:12px;padding:3px 10px}
+.detail.fs{position:fixed;inset:0;z-index:50;max-height:none;border-radius:0;border:0;padding-block:calc(env(safe-area-inset-top,0px) + 20px) 40px;padding-inline:max(16px, calc((100vw - 920px) / 2));overflow-y:auto}
+.detail.fs .dbar{position:sticky;top:calc(-20px - env(safe-area-inset-top,0px));background:var(--surface);z-index:1;padding-top:8px}
+.detail.fs h3{font-size:30px}
+.detail.fs pre{font-size:14px}
+.detail.fs p,.detail.fs li{font-size:16px}
+body.fs-open{overflow:hidden}
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto;padding-block:18px;padding-inline:18px;min-width:0}
+
+/* tree — horizontal */
+.branch{display:flex;align-items:center}
+.children{display:flex;flex-direction:column;position:relative;margin-left:26px}
+.children::before{content:"";position:absolute;left:-26px;top:50%;width:26px;border-top:2px solid var(--line)}
+.children>.branch{position:relative;padding:4px 0 4px 22px}
+.children>.branch::before{content:"";position:absolute;left:0;top:50%;width:22px;border-top:2px solid var(--line)}
+.children>.branch::after{content:"";position:absolute;left:0;top:0;bottom:0;border-left:2px solid var(--line)}
+.children>.branch:first-child::after{top:50%}
+.children>.branch:last-child::after{bottom:50%}
+.children>.branch:only-child::after{display:none}
+.branch.collapsed>.children{display:none}
+
+.node{font-family:var(--f-body);color:var(--ink);background:var(--surface);border:1.5px solid var(--line);text-align:left;cursor:pointer;flex:none}
+.node:hover{border-color:var(--blue)}
+.node.sel{box-shadow:0 0 0 3px var(--gold)}
+.node .tag{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.04em;color:var(--muted)}
+.root{border:2px solid var(--blue);border-radius:4px;padding:12px 14px;width:190px}
+.root .zh{font-family:var(--f-display);font-weight:800;font-size:22px;color:var(--blue);display:block;line-height:1.15}
+.root .en{font-size:12px;color:var(--muted);display:block;margin-top:4px}
+.unit{border-radius:4px;padding:8px 12px;width:230px;position:relative}
+.unit .zh{font-weight:700;font-size:15px;display:block;padding-right:14px}
+.unit .en{font-size:12px;color:var(--muted);display:block}
+.unit .tw{position:absolute;right:9px;top:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.unit.done{border-color:var(--done);background:var(--done-soft)}
+.unit.now{border-color:var(--gold);background:var(--gold-soft)}
+.unit.next{border-style:dashed}
+.unit.proj{border-color:var(--blue)}
+.leaf{border-radius:4px;padding:6px 10px;width:320px;font-size:13.5px;border-width:1px}
+.leaf .row{display:flex;align-items:center;gap:8px}
+.leaf .t{min-width:0;font-weight:500}
+.leaf .lec{margin-left:auto;font-family:var(--f-mono);font-size:10.5px;color:var(--muted);white-space:nowrap}
+.leaf .en{display:block;font-size:11.5px;color:var(--muted);line-height:1.3;margin-left:17px}
+.leaf ul{margin:5px 0 1px 17px;padding:0 0 0 12px;font-size:12px;line-height:1.45;color:var(--muted)}
+.leaf li{margin:1px 0}
+.leaf li::marker{color:var(--line)}
+#tree.compact .leaf ul{display:none}
+
+/* detail */
+.detail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);max-height:calc(100vh - 76px);overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.detail .tag{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.detail h3{font-family:var(--f-display);font-size:22px;margin:4px 0 2px;color:var(--blue);line-height:1.2;text-wrap:balance}
+.detail .en{color:var(--muted);font-size:13px;margin:0 0 12px}
+.detail p{margin:0 0 10px}
+.detail h4{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px;font-family:var(--f-mono);font-weight:600}
+.detail ul{margin:0;padding-left:18px}
+.detail li{margin:3px 0}
+.detail ul.warn li::marker{color:var(--warn)}
+.terms{display:flex;flex-wrap:wrap;gap:6px}
+.terms span{font-family:var(--f-mono);font-size:12px;background:var(--code-bg);border-radius:4px;padding:2px 7px}
+pre{background:var(--code-bg);border-radius:6px;padding:10px 12px;overflow-x:auto;font-family:var(--f-mono);font-size:12.5px;line-height:1.5;margin:0}
+pre + pre{margin-top:8px}
+.tip{border-left:3px solid var(--gold);padding:4px 0 4px 10px;font-size:13.5px;margin:0}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;margin-bottom:6px}
+details.check{border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+details.check summary{cursor:pointer;font-weight:500}
+details.check .q{margin:6px 0}
+details.check .a{border-top:1px dashed var(--line);padding-top:6px;margin-top:6px}
+
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:2px solid var(--line);margin-bottom:18px}
+.tabs button{font:600 15px var(--f-body);color:var(--muted);background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:8px 14px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--gold)}
+.tabs .count{font-family:var(--f-mono);font-size:11px;font-weight:400;color:var(--muted)}
+.viewtools{margin-bottom:12px}
+.goto{font:500 12.5px var(--f-body);color:var(--blue);background:none;border:1px solid var(--line);border-radius:5px;padding:3px 9px;cursor:pointer}
+.goto:hover{border-color:var(--blue)}
+
+/* exams view */
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.panel h3{font-family:var(--f-display);font-size:20px;color:var(--blue);margin:0 0 4px;text-wrap:balance}
+.panel h4{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px;font-family:var(--f-mono);font-weight:600}
+.panel p{margin:0 0 8px}
+.panel ul{margin:0;padding-left:18px}
+.panel li{margin:3px 0}
+.panel.next{border-color:var(--gold);box-shadow:inset 0 3px 0 var(--gold)}
+.panel.past{opacity:.85}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.meta b{color:var(--ink);font-weight:600}
+.pill{display:inline-block;font-size:11.5px;font-family:var(--f-mono);padding:1px 7px;border-radius:10px;border:1px solid var(--line)}
+.pill.past{color:var(--done);border-color:var(--done)}
+.pill.next{background:var(--gold-soft);border-color:var(--gold);color:var(--ink)}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;font-family:var(--f-mono);font-weight:600;color:var(--muted);letter-spacing:.04em}
+td.num,th.num{text-align:right}
+tr.next td{background:var(--gold-soft)}
+tr.past td{color:var(--muted)}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--line);padding-left:10px;margin:8px 0 0}
+.wide{grid-column:1/-1}
+
+/* practice view */
+.pfilters{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pfilters label{font-size:12.5px;color:var(--muted)}
+.pfilters select{font:14px var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 8px;max-width:100%}
+.pfilters .chk{display:inline-flex;align-items:center;gap:6px;color:var(--ink);margin-left:auto}
+.pfilters .field{display:flex;align-items:center;gap:6px;min-width:0}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg)}
+
+/* phone & tablet tuning */
+@media (max-width:760px){
+  .tabs{gap:0}
+  .tabs button{font-size:14.5px;padding:10px 10px;flex:1 1 auto}
+  .tabs .en-l{display:none}
+  .exams{padding:12px}
+  .exams h2{font-size:13.5px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .chip{flex:none}
+  .legend{gap:6px 12px;font-size:12px}
+  .pfilters{display:grid;grid-template-columns:1fr;gap:10px}
+  .pfilters .field{display:grid;grid-template-columns:5em minmax(0,1fr)}
+  .pfilters select{width:100%;font-size:16px}
+  .pfilters .chk{margin-left:0}
+  .q{padding:12px 14px}
+  .qact button{padding:7px 12px;font-size:13.5px}
+  .detail.fs h3{font-size:24px}
+  .detail.fs p,.detail.fs li{font-size:15.5px}
+  .detail.fs pre{font-size:13px}
+  .node{min-height:40px}
+}
+.pstat{font-size:13px;color:var(--muted);margin:12px 0}
+.qlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:14px;align-items:start}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.q.ok{border-color:var(--done)}
+.q.again{border-color:var(--warn)}
+.qhead{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.qtype{font-family:var(--f-mono);font-weight:600;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--code-bg);color:var(--ink)}
+.lvl{font-size:11.5px}
+.lvl.l3{color:var(--warn);font-weight:600}
+.qnum{margin-left:auto;font-family:var(--f-mono);font-size:11px}
+.q h4{font-size:16px;margin:8px 0 6px;line-height:1.35}
+.q p{margin:0 0 8px}
+.q details{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.q summary{cursor:pointer;font-size:13.5px;font-weight:500;color:var(--blue)}
+.q details > *:not(summary){margin-top:8px}
+.qact{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.qact button{font:500 12.5px var(--f-body);border-radius:5px;padding:4px 10px;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.qact button[data-mark="ok"][aria-pressed="true"]{border-color:var(--done);background:var(--done-soft)}
+.qact button[data-mark="again"][aria-pressed="true"]{border-color:var(--warn)}
+.qact .goto{margin-left:auto}
+.empty{padding:24px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:10px}
+
+footer{margin-top:22px;font-size:12.5px;color:var(--muted);max-width:90ch}
+footer a{color:var(--blue)}
+
+.main > .detail{align-self:start}
+@media (max-width:1180px){
+  .main{grid-template-columns:minmax(0,1fr);gap:20px}
+  .resizer{display:none}
+  .detail{position:static;max-height:none}
+}
+/* phone: outline view */
+@media (max-width:760px){
+  .wrap{padding-inline:16px}
+  .mapbox{padding-inline:12px}
+  .branch{display:block}
+  .children{display:block;margin-left:10px;padding-left:12px;border-left:2px solid var(--line);margin-top:6px}
+  .children::before,.children>.branch::before,.children>.branch::after{display:none}
+  .children>.branch{padding:3px 0}
+  .root,.unit,.leaf{width:100%}
+}
+@media (prefers-reduced-motion:no-preference){
+  .node{transition:border-color .15s, box-shadow .15s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">UC Berkeley · Fall 2026 · John DeNero</div>
+      <h1>CS 61A 課程地圖 Course Map</h1>
+      <p class="lede">三個部分：「課程內容」是六個單元加四個專案的心智圖；「考試」整理評分結構、每次 quiz 與 midterm 的範圍和準備方法；「練習題」依單元與考試分類，每題附提示、答案與解析。狀態以 2026-10-10 為準。</p>
+    </div>
+  </header>
+
+  <section class="exams" aria-label="考試時間表">
+    <h2>Quiz 與 Midterm 時間表 <small>8 次 quiz 中通過 5 次即拿滿 quiz 分數（10 分）；quiz 期間切換分頁或貼上答案會判定不通過</small></h2>
+    <div class="chips" id="chips"></div>
+    <div class="legend">
+      <span><i class="dot done"></i>已教完</span>
+      <span><i class="dot now"></i>進行中</span>
+      <span><i class="dot next"></i>尚未開始</span>
+      <span><b class="qb">Q4</b>該主題是某次 quiz 的範圍</span>
+    </div>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="頁面區塊">
+    <button type="button" role="tab" id="tab-map" aria-controls="view-map" aria-selected="true">課程內容<span class="en-l"> Content</span></button>
+    <button type="button" role="tab" id="tab-exams" aria-controls="view-exams" aria-selected="false">考試<span class="en-l"> Exams</span></button>
+    <button type="button" role="tab" id="tab-practice" aria-controls="view-practice" aria-selected="false">練習題<span class="en-l"> Practice</span> <span class="count" id="qcount"></span></button>
+  </nav>
+
+  <section class="view" id="view-map" role="tabpanel" aria-labelledby="tab-map">
+    <div class="tools viewtools">
+      <button class="btn" id="compact" type="button" aria-pressed="false">只看主題</button>
+      <button class="btn" id="expandAll" type="button">全部展開</button>
+      <button class="btn" id="collapseAll" type="button">全部收合</button>
+    </div>
+    <div class="main">
+      <div class="mapbox"><div id="tree"></div></div>
+      <div class="resizer" id="resizer" role="separator" aria-orientation="vertical" aria-label="拖曳調整說明面板寬度" tabindex="0" title="往左拖曳可加寬，按兩下還原"></div>
+      <aside class="detail" id="detailbox">
+        <div class="dbar">
+          <span class="dbar-label">說明 Details</span>
+          <button type="button" class="btn sm" id="fsBtn" aria-pressed="false">全螢幕</button>
+        </div>
+        <div id="detail" aria-live="polite"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="view" id="view-exams" role="tabpanel" aria-labelledby="tab-exams" hidden></section>
+
+  <section class="view" id="view-practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
+    <div class="pfilters">
+      <div class="field"><label for="f-unit">單元</label>
+      <select id="f-unit"></select></div>
+      <div class="field"><label for="f-exam">考試範圍</label>
+      <select id="f-exam"></select></div>
+      <div class="field"><label for="f-type">題型</label>
+      <select id="f-type">
+        <option value="">全部題型</option>
+        <option value="wwpd">WWPD 預測輸出</option>
+        <option value="code">寫程式</option>
+        <option value="concept">觀念題</option>
+        <option value="sql">SQL</option>
+      </select></div>
+      <label class="chk"><input type="checkbox" id="f-hide"> 隱藏已答對</label>
+    </div>
+    <p class="pstat" id="pstat"></p>
+    <div id="qlist" class="qlist"></div>
+  </section>
+
+  <footer>課程進度、quiz 與考試日期整理自 <a href="https://cs61a.org/fa26/" target="_blank" rel="noopener">cs61a.org/fa26</a>。說明、範例與練習題為整理後的學習筆記；後半學期（Gleam、Browsers、Project 4）的講義尚未公布，細節以官網為準。</footer>
+</div>
+
+<script>
+const EXAMS = [
+  {k:"Q1", d:"9/8", s:"Functions", st:"past"},
+  {k:"MT1", d:"9/14", s:"L1–6", st:"past", exam:true},
+  {k:"Q2", d:"9/21", s:"Higher-Order Functions", st:"past"},
+  {k:"Q3", d:"9/28", s:"Recursion (Count Coins)", st:"past"},
+  {k:"MT2", d:"10/5–9", s:"through L14 Linked Lists", st:"past", exam:true},
+  {k:"Q4", d:"10/12", s:"Recursive Data", st:"next"},
+  {k:"Q5", d:"10/19", s:"Mutation", st:""},
+  {k:"MT3", d:"10/27", s:"8–10pm", st:"", exam:true},
+  {k:"MT2 Retake", d:"11/5–6", s:"補考", st:"", exam:true},
+  {k:"Q6", d:"11/9", s:"Gleam", st:""},
+  {k:"Q7", d:"11/16", s:"Gleam Data", st:""},
+  {k:"Q8", d:"11/30", s:"SQL", st:""}
+];
+
+const ROOT = {
+  zh:"CS 61A", en:"Structure and Interpretation of Computer Programs",
+  what:"這門課的主線是 abstraction（抽象化）：如何用函數、資料結構、物件與不同語言，把複雜的程式拆成可以理解、可以組合的小部分。前半學期用 Python 打基礎（函數、遞迴、資料、物件），後半學期加入 Gleam（函數式語言）、SQL 與 TypeScript，並討論 coding agents、軟體測試與倫理。",
+  goals:[
+    "能預測任何一段 Python 程式的輸出（WWPD）並畫出 environment diagram",
+    "能用 higher-order functions 和 recursion 解題",
+    "能設計並遞迴處理 linked list、tree 等資料結構",
+    "能用 class 與 inheritance 組織較大的程式",
+    "能讀寫其他語言（Gleam、SQL）並理解直譯器如何運作"
+  ],
+  keys:["abstraction","environment diagram","recursion","data abstraction","OOP","functional programming"],
+  tip:"評分重點：4 個 project、3 次 midterm（Midterm 2 有補考）、8 次 quiz（通過 5 次即可）。Quiz 基本上是「不看筆記、不用 AI，從零重寫一題作業」。"
+};
+
+const UNITS = [
+ {id:"u1", zh:"函數與控制", en:"Functions & Control", lec:"L1–8", st:"done", proj:"Project 1: Hog",
+  what:"學習 Python 如何求值：運算式、名稱、函數呼叫、控制流程，以及把函數當作資料傳遞的 higher-order functions。這是整門課的地基，後面每一個單元都會用到 environment diagram。",
+  goals:["說出任何 call expression 的求值順序","分辨 print 與 return 的差別","畫出含有嵌套函數與 lambda 的 environment diagram","寫出接收或回傳函數的函數"],
+  keys:["call expression","frame","environment diagram","lambda","HOF"],
+  tip:"Midterm 1 範圍是 L1–6 與課本 1.1–1.6。若這裡不熟，後面的 recursion 和 HOF 題目都會很吃力。",
+  topics:[
+   {zh:"運算式與求值", en:"Expressions & Evaluation", lec:"L1–2", st:"done",
+    subs:["primitive expression：數字、名稱","call expression 三步：operator → operands → 套用","巢狀呼叫由內而外求值","built-in 函數與 import（operator、math）"],
+    what:"Call expression 的求值順序是固定的：先求 operator（要呼叫哪個函數），再由左到右求每個 operand，最後把參數值套用到函數上。巢狀呼叫時，內層會先被求值。",
+    keys:["operator","operand","nested call","expression tree"],
+    code:`from operator import add, mul
+mul(add(2, 3), add(4, 1))
+# 先求 add(2, 3) → 5
+# 再求 add(4, 1) → 5
+# 最後 mul(5, 5) → 25`,
+    pitfalls:["把函數本身（f）和呼叫結果（f()）混為一談","以為參數會由右到左求值"],
+    check:{q:"max(min(2, 5), abs(-3)) 的值是什麼？",a:"3。min(2, 5) 是 2，abs(-3) 是 3，max(2, 3) 是 3。"},
+    practice:"Lab 0、Lab 1、HW 1", tip:"手畫 expression tree，每個節點標上它的值，是練 WWPD 最快的方法。"},
+   {zh:"名稱與賦值", en:"Names & Assignment", lec:"L2", st:"done",
+    subs:["賦值：先求右邊，再把值綁定到左邊名稱","多重賦值：右邊全部先求完才綁定","def 建立函數並綁定名稱","名稱可以重新綁定到其他值或函數"],
+    what:"賦值陳述式會先把等號右邊完全求值，再把結果綁定到左邊的名稱。多重賦值 a, b = ... 時，右邊所有運算式都先求完，才一次綁定。def 也是一種綁定：它建立函數物件，並綁定到函數名稱。",
+    keys:["assignment","binding","def statement","rebinding"],
+    code:`a, b = 1, 2
+a, b = b, a + b   # 右邊先算出 (2, 3)
+print(a, b)       # 2 3
+
+f = max
+f(3, 7)           # 7，f 與 max 指向同一個函數`,
+    pitfalls:["以為多重賦值是一個接一個執行（a 先改了再算 b）","把 max = 5 之後還想呼叫 max()"],
+    check:{q:"x = 2；x = x * x + x；之後 x 是多少？",a:"6。右邊用的是舊的 x（2），2*2+2 = 6，然後才重新綁定。"},
+    practice:"Lab 1", tip:"每一行賦值都想成在 frame 裡「更新一個名稱的箭頭」。"},
+   {zh:"print 與 return", en:"Print vs Return, None", lec:"L2", st:"done",
+    subs:["return 結束函數並回傳值","沒有 return 的函數回傳 None","print 只是顯示，本身回傳 None","互動式直譯器不會顯示 None"],
+    what:"這是 WWPD 題目最常考的陷阱。return 會把值交回給呼叫者並立刻結束函數；print 只是把東西顯示在螢幕上，它自己的回傳值是 None。函數沒有寫 return 時，也會回傳 None。",
+    keys:["return","None","print","side effect","pure function"],
+    code:`>>> print(print(1), print(2))
+1
+2
+None None
+
+>>> x = print("hi")
+hi
+>>> x            # 什麼都不顯示，因為 x 是 None
+>>> print(x)
+None`,
+    pitfalls:["在需要回傳值的函數裡用 print 代替 return，doctest 會失敗","忘記 return 之後的程式碼不會執行"],
+    check:{q:"def f(): print(3)，那麼 f() + 1 會發生什麼？",a:"先印出 3，然後出現 TypeError，因為 f() 回傳 None，None + 1 不合法。"},
+    practice:"Lab 1 WWPD、HW 1", tip:"看到 print 就問自己：這一行「顯示」了什麼？又「回傳」了什麼？"},
+   {zh:"控制流程", en:"Control: if / while / Booleans", lec:"L3", st:"done", quiz:"Q1",
+    subs:["if / elif / else 只會執行其中一個 suite","while 迴圈：條件為真就重複","falsy 值：0、''、[]、None、False","and / or 短路求值，回傳運算元本身"],
+    what:"if 陳述式依序檢查條件，只執行第一個為真的區塊。while 迴圈在條件為真時重複執行，必須在迴圈內改變條件，否則會無限循環。and / or 會 short-circuit：結果一旦確定就停止，回傳的是最後被求值的那個運算元，不一定是 True 或 False。",
+    keys:["if / elif / else","while","short-circuit","truthy / falsy","conditional expression"],
+    code:`>>> 0 or 'hi'       # 0 是 falsy，繼續求 'hi'
+'hi'
+>>> 3 and 0         # 3 是 truthy，繼續求 0
+0
+>>> 1/0 and 5       # ZeroDivisionError
+>>> False and 1/0   # False，右邊不會被求值
+
+def count_digits(n):
+    count = 0
+    while n > 0:
+        n = n // 10
+        count += 1
+    return count`,
+    pitfalls:["把 if / elif 寫成多個獨立的 if，導致多個區塊都被執行","while 迴圈內忘記更新變數，變成無限迴圈","以為 and / or 一定回傳 True 或 False"],
+    check:{q:"print(None or 0 or '')  會印出什麼？",a:"印出空字串（看起來是空行）。三個都是 falsy，or 回傳最後一個被求值的運算元 ''。"},
+    practice:"Lab 1、HW 1（Q4 hailstone 是 Quiz 1 的範本）", tip:"Quiz 1 的提示：能不看筆記重做 hailstone 就能通過。"},
+   {zh:"高階函數", en:"Higher-Order Functions", lec:"L4", st:"done", quiz:"Q2",
+    subs:["函數作為參數（例如 summation(n, term)）","函數作為回傳值（例如 make_adder）","lambda 運算式","currying：f(x)(y)","function composition"],
+    what:"在 Python 中函數也是值，可以當作參數傳入，也可以被另一個函數回傳。這讓我們能把「共同的計算模式」抽出來，例如把「加總 term(1) 到 term(n)」寫成一個通用的 summation。lambda 是不需要名字的函數運算式。",
+    keys:["lambda","compose","currying","make_adder","function as value"],
+    code:`def summation(n, term):
+    total, k = 0, 1
+    while k <= n:
+        total, k = total + term(k), k + 1
+    return total
+
+summation(3, lambda x: x * x)   # 1 + 4 + 9 = 14
+
+def make_adder(n):
+    def adder(k):
+        return n + k
+    return adder
+
+make_adder(3)(4)                # 7`,
+    pitfalls:["回傳 adder() 而不是 adder（應該回傳函數本身）","搞不清楚 f(x)(y) 是兩次呼叫","lambda 內不能寫陳述式（例如 return、賦值）"],
+    check:{q:"(lambda x: lambda y: x - y)(10)(3) 的值？",a:"7。第一次呼叫把 x 綁定為 10，回傳內層 lambda；第二次呼叫 y = 3，計算 10 - 3。"},
+    practice:"Lab 2、HW 2（Quiz 2 考 composite_identity）", tip:"先寫出每一層函數「接收什麼、回傳什麼」，例如「接收數字，回傳一個接收數字的函數」，再動手寫。"},
+   {zh:"環境與環境圖", en:"Environments & Environment Diagrams", lec:"L5", st:"done",
+    subs:["每次呼叫建立新的 local frame","函數的 parent 是「定義時」所在的 frame","找名稱：local → parent → … → Global","嵌套函數記得外層變數（closure）"],
+    what:"呼叫使用者定義的函數時，會建立一個新的 frame，把參數綁定進去，並標示它的 parent。關鍵規則：parent 是這個函數「被定義時」所在的 frame，不是呼叫它的地方。找名稱時從目前 frame 開始，一路往 parent 找，直到 Global frame。",
+    keys:["Global frame","local frame","parent","closure","name lookup"],
+    code:`x = 1
+def f():
+    x = 2
+    def g():
+        return x
+    return g
+
+h = f()
+h()   # 2，因為 g 的 parent 是 f 的 frame（x = 2）`,
+    pitfalls:["把 parent 標成「呼叫者」的 frame","忘記 lambda 呼叫時也會建立 frame","Return value 忘記標在 frame 裡"],
+    check:{q:"上面的例子中，若改成 def g(): return x + 1 並在 Global 設 x = 100，h() 是多少？",a:"仍然是 3。g 在 f 的 frame 中就找到 x = 2，不會用到 Global 的 x。"},
+    practice:"Discussion 1–2、tutor.cs61a.org", tip:"考試時環境圖一定要畫完整：frame 名稱、parent、所有綁定、Return value。用 Python Tutor 對答案。"},
+   {zh:"函數抽象與設計", en:"Functional Abstraction & Design", lec:"L6", st:"done",
+    subs:["函數簽名：參數、回傳值、domain / range","docstring 與 doctest","一個函數只做一件事（decomposition）","decorator（@）語法"],
+    what:"好的函數像黑盒子：使用者只需要知道它接受什麼、回傳什麼，不需要知道內部怎麼做。課程用 docstring 說明行為，用 doctest 寫範例並自動測試。重複出現的模式應該抽成函數（DRY）。",
+    keys:["docstring","doctest","decomposition","DRY","decorator"],
+    code:`def square(x):
+    """Return x squared.
+
+    >>> square(3)
+    9
+    """
+    return x * x`,
+    pitfalls:["函數名稱與實際行為不符","一個函數裡混合太多工作，難以測試"],
+    check:{q:"為什麼 doctest 很重要？",a:"它同時是說明文件與測試：python3 -m doctest file.py 會自動執行 >>> 範例並比對輸出。"},
+    practice:"Project 1 Hog", tip:"Hog 的每個 problem 都是在練習把大問題拆成小函數。"},
+   {zh:"函數範例與 Midterm 1 複習", en:"Function Examples & MT1 Review", lec:"L7–8", st:"done",
+    subs:["WWPD 題型","環境圖題型","寫 HOF 題型（填空式程式碼）"],
+    what:"兩堂整合複習課，示範考試常見的三種題型。61A 考題常是「填空式」：給定程式框架，只能在空格填入運算式。",
+    keys:["WWPD","fill-in-the-blank","skeleton code"],
+    pitfalls:["填空題硬要寫出框架以外的程式結構","沒有先用小例子驗證答案"],
+    practice:"Midterm 1 study guide、過去考題（Resources 頁面）", tip:"填空題先看最後的 return 要回傳什麼，再倒推每個空格。"}
+  ]},
+ {id:"u2", zh:"遞迴", en:"Recursion", lec:"L9–10", st:"done", proj:"Project 2: Cats",
+  what:"函數呼叫自己來解決問題。先學單一遞迴，再學呼叫順序、互相遞迴，最後是一次分出多條路徑的 tree recursion。這是很多新生第一個卡關的地方。",
+  goals:["寫出正確的 base case 與 recursive case","預測遞迴函數中 print 的順序","用「用 / 不用」模板解計數問題"],
+  keys:["base case","recursive case","leap of faith","tree recursion"],
+  tip:"寫遞迴的固定三步：先寫 base case → 相信遞迴呼叫是對的 → 只想「這一層」要做什麼。",
+  topics:[
+   {zh:"遞迴函數", en:"Recursive Functions", lec:"L9", st:"done",
+    subs:["base case：最小、可直接回答的情況","recursive case：把問題縮小再交給自己","leap of faith：假設遞迴呼叫已經正確","每次遞迴呼叫都有自己的 frame"],
+    what:"遞迴函數由兩部分組成：base case 直接回傳答案；recursive case 把問題變小（例如 n 變成 n // 10），呼叫自己，再用結果組出答案。寫 recursive case 時，不要追蹤每一層，而是相信遞迴呼叫會回傳正確結果（leap of faith）。",
+    keys:["base case","recursive case","leap of faith","RecursionError"],
+    code:`def sum_digits(n):
+    """Sum the digits of positive integer n."""
+    if n < 10:                       # base case
+        return n
+    all_but_last, last = n // 10, n % 10
+    return sum_digits(all_but_last) + last
+
+def fact(n):
+    if n == 0:
+        return 1
+    return n * fact(n - 1)`,
+    pitfalls:["沒有 base case 或永遠到不了 base case → RecursionError","遞迴呼叫沒有讓問題變小","呼叫了遞迴卻忘記 return 它的結果"],
+    check:{q:"sum_digits(2026) 會經過哪幾次呼叫？",a:"sum_digits(2026) → sum_digits(202) → sum_digits(20) → sum_digits(2)，回傳 2，再逐層加回 0、2、6，得到 10。"},
+    practice:"Discussion 3、HW 3", tip:"先手動寫出輸入很小時（0、1、9）的答案，base case 通常就出來了。"},
+   {zh:"遞迴呼叫的順序", en:"Order of Recursive Calls", lec:"L9", st:"done",
+    subs:["遞迴呼叫前的程式碼「往下」執行","遞迴呼叫後的程式碼「往回」執行","cascade 範例：數字逐位遞減再遞增"],
+    what:"遞迴呼叫之前的程式碼，會在往下呼叫的過程中執行；遞迴呼叫之後的程式碼，要等到內層全部回傳後，才在往回的過程中執行。這是 WWPD 題目常考的點。",
+    keys:["cascade","call stack","before / after recursive call"],
+    code:`def cascade(n):
+    if n < 10:
+        print(n)
+    else:
+        print(n)
+        cascade(n // 10)
+        print(n)
+
+cascade(123)
+# 123
+# 12
+# 1
+# 12
+# 123`,
+    pitfalls:["以為遞迴呼叫後的 print 會立刻執行"],
+    check:{q:"把 cascade 中第一個 print(n) 刪掉（只保留 else 裡呼叫後的 print），cascade(123) 印出什麼？",a:"1、12、123。base case 先印 1，之後在返回途中依序印 12、123。"},
+    practice:"Lecture 9 examples", tip:"用縮排畫出每一層呼叫，在對應位置寫下 print 的內容。"},
+   {zh:"互相遞迴", en:"Mutual Recursion", lec:"L9", st:"done",
+    subs:["兩個函數互相呼叫","每次呼叫仍要往 base case 靠近","例子：Luhn algorithm、is_even / is_odd"],
+    what:"兩個或多個函數互相呼叫，例如 is_even(n) 呼叫 is_odd(n - 1)，is_odd(n) 又呼叫 is_even(n - 1)。課程以信用卡號檢查碼的 Luhn algorithm 為例。",
+    keys:["mutual recursion","Luhn algorithm"],
+    code:`def is_even(n):
+    if n == 0:
+        return True
+    return is_odd(n - 1)
+
+def is_odd(n):
+    if n == 0:
+        return False
+    return is_even(n - 1)`,
+    pitfalls:["兩個函數都缺少 base case"],
+    check:{q:"is_odd(3) 經過哪些呼叫？",a:"is_odd(3) → is_even(2) → is_odd(1) → is_even(0) → True。"},
+    practice:"Lecture 9 examples", tip:"畫出呼叫順序，確認每一次呼叫都在往 base case 靠近。"},
+   {zh:"樹狀遞迴", en:"Tree Recursion", lec:"L10", st:"done", quiz:"Q3",
+    subs:["一次呼叫中做兩次以上遞迴呼叫","fib：重複計算很多次","「用 / 不用」模板（use it or lose it）","count_partitions、count coins","通常有多個 base case"],
+    what:"當一個問題可以分成好幾種情況時，對每種情況各做一次遞迴呼叫，再把結果組合起來，就形成一棵呼叫樹。最常見的模板是：對目前這個元素，「用它」算一次，「不用它」算一次，把兩邊的答案加起來（計數）或取 or（是否存在）。",
+    keys:["count_partitions","count coins","use it / lose it","fib"],
+    code:`def count_partitions(n, m):
+    """用不超過 m 的正整數，有幾種方式加總成 n。"""
+    if n == 0:
+        return 1                 # 剛好湊到
+    elif n < 0 or m == 0:
+        return 0                 # 超過了，或沒有數字可用
+    with_m = count_partitions(n - m, m)     # 用 m
+    without_m = count_partitions(n, m - 1)  # 不用 m
+    return with_m + without_m
+
+count_partitions(6, 4)   # 9`,
+    pitfalls:["base case 的順序寫錯（應先檢查 n == 0）","「用」之後忘記保留同一個選項可重複使用","計數題用加法，存在題用 or，兩者混淆"],
+    check:{q:"count_partitions(3, 2) 是多少？列出所有方式。",a:"2 種：2+1、1+1+1。"},
+    practice:"Discussion 4、HW 3、PrairieLearn 上的 Quiz 3 練習版", tip:"三個 base case 要分清楚：剛好湊到（回傳 1）、超過（回傳 0）、沒有選項了（回傳 0）。"}
+  ]},
+ {id:"u3", zh:"資料與遞迴資料", en:"Sequences & Recursive Data", lec:"L11–16", st:"done", proj:"Project 2: Cats",
+  what:"從單一數值進入資料結構：list、dictionary、物件，再到可以遞迴處理的 linked list 和 tree。Midterm 2 的範圍到 Linked Lists（L14），Quiz 4 考 Recursive Data。",
+  goals:["熟練 list 的 indexing、slicing 與 comprehension","使用 dict 與 max / min 的 key 參數","遵守 abstraction barrier","遞迴處理 linked list 與 tree"],
+  keys:["list","dict","comprehension","Link","tree"],
+  tip:"下一次 quiz（Q4，10/12）就是這個單元的 Linked Lists 和 Trees。",
+  topics:[
+   {zh:"序列與 List", en:"Sequences & Lists", lec:"L11", st:"done",
+    subs:["indexing（含負數 index）與 len","for 陳述式與 sequence unpacking","range(start, end, step)","list comprehension：[expr for x in s if cond]"],
+    what:"List 是有順序的值的集合。可以用 index 取值（s[0] 是第一個，s[-1] 是最後一個），用 for 走過每個元素，用 list comprehension 一行建立新 list。",
+    keys:["indexing","len","for","range","list comprehension","unpacking"],
+    code:`s = [3, 1, 4, 1, 5]
+s[0], s[-1]                 # (3, 5)
+[x * 2 for x in s if x > 1] # [6, 8, 10]
+
+pairs = [[1, 2], [3, 4]]
+for a, b in pairs:          # unpacking
+    print(a + b)            # 3、7
+
+list(range(1, 10, 3))       # [1, 4, 7]`,
+    pitfalls:["range(1, 5) 不包含 5","把 index 超出範圍（IndexError）"],
+    check:{q:"[x for x in range(10) if x % 3 == 0] 是什麼？",a:"[0, 3, 6, 9]。"},
+    practice:"Lab 3", tip:"寫 comprehension 前先用一句中文說：「對每個 ___，如果 ___，放入 ___」。"},
+   {zh:"切片與容器", en:"Slicing & Containers", lec:"L12", st:"done",
+    subs:["slicing：s[1:3]、s[::-1]，會建立新 list","in / not in","sum、max、min 與 key 參數","dictionary：keys、values、items","string 也是序列"],
+    what:"Slicing 取出序列的一段並建立新的 list。in 檢查元素是否存在。max / min 可以搭配 key 參數，依照某個函數的結果比較。Dictionary 以 key 對應 value，適合查表。",
+    keys:["slicing","in","sum / max / min","key=","dict","items()"],
+    code:`s = [1, 2, 3, 4]
+s[1:3]       # [2, 3]
+s[::-1]      # [4, 3, 2, 1]
+
+max(['ab', 'c', 'def'], key=len)   # 'def'
+
+d = {'a': 1, 'b': 2}
+for k, v in d.items():
+    print(k, v)
+{k: v * 10 for k, v in d.items()}  # {'a': 10, 'b': 20}`,
+    pitfalls:["以為 sum 可以直接加字串","dict 的 key 必須是不可變的（不能是 list）"],
+    check:{q:"min([-3, 2, -1], key=abs) 是什麼？",a:"-1。依絕對值比較，|-1| 最小，但回傳的是原本的元素 -1。"},
+    practice:"Lab 3、Project 2 Cats", tip:"max(..., key=f) 是 Cats 專案常用技巧。"},
+   {zh:"物件與複合資料", en:"Objects & Compound Data", lec:"L13", st:"done",
+    subs:["constructor 建立資料，selector 讀取資料","abstraction barrier：不直接碰內部表示","以有理數（rational）為例","物件把資料和行為綁在一起"],
+    what:"把多個值組合成一個有意義的資料單位。使用者只透過 constructor（建立）與 selector（讀取）操作，不需要也不應該知道內部是 list 還是其他結構，這條界線叫做 abstraction barrier。好處是內部表示可以更換，使用它的程式不用改。",
+    keys:["constructor","selector","abstraction barrier","rational","dot expression"],
+    code:`def rational(n, d):        # constructor
+    return [n, d]
+
+def numer(x): return x[0]  # selectors
+def denom(x): return x[1]
+
+def mul_rational(x, y):
+    return rational(numer(x) * numer(y),
+                    denom(x) * denom(y))`,
+    pitfalls:["在 abstraction barrier 外直接寫 x[0]，題目會判定違反抽象"],
+    check:{q:"若把 rational 的內部改成 dict，mul_rational 需要改嗎？",a:"不需要。它只用到 rational、numer、denom，只要這三個函數一起改即可。"},
+    practice:"Reading 2.3", tip:"題目若給了 constructor / selector，就不要直接用 index 存取內部結構。"},
+   {zh:"鏈結串列", en:"Linked Lists", lec:"L14", st:"done", quiz:"Q4",
+    subs:["Link(first, rest)，rest 也是 linked list","以 Link.empty 結尾","迭代：while s is not Link.empty","遞迴：處理 first，再遞迴處理 rest","建立新 linked list：Link(x, 遞迴結果)"],
+    what:"Linked list 是一個遞迴定義的資料結構：要嘛是空的（Link.empty），要嘛是一個 first 值加上一個 rest（另一個 linked list）。因為定義本身就是遞迴的，處理它也最自然地用遞迴：base case 是空串列，recursive case 處理 first，把 rest 交給遞迴。",
+    keys:["Link","first","rest","Link.empty","box-and-pointer"],
+    code:`s = Link(1, Link(2, Link(3)))
+s.first           # 1
+s.rest.first      # 2
+
+def sum_link(s):
+    if s is Link.empty:
+        return 0
+    return s.first + sum_link(s.rest)
+
+def double(s):    # 回傳新的 linked list
+    if s is Link.empty:
+        return Link.empty
+    return Link(s.first * 2, double(s.rest))`,
+    pitfalls:["對 Link.empty 取 .first 或 .rest（AttributeError）","用 == 比較 Link.empty，應該用 is","回傳新 list 時忘記把遞迴結果包進 Link(...)"],
+    check:{q:"Link(1, Link(2)).rest.rest 是什麼？",a:"Link.empty。"},
+    practice:"Lab 4、HW 4（Quiz 4 範圍）", tip:"Base case 幾乎都是 s is Link.empty。先畫 box-and-pointer 圖再寫程式。"},
+   {zh:"樹", en:"Trees", lec:"L15", st:"done", quiz:"Q4",
+    subs:["tree 由 label 與 branches 組成","每個 branch 本身也是 tree","leaf：沒有 branches 的 tree","模板：處理 label + 對每個 branch 遞迴 + 組合結果","常見題型：計數、找最大值、路徑、建立新 tree"],
+    what:"Tree 有一個 label（根的值）和一組 branches，每個 branch 也是一棵 tree。沒有 branches 的 tree 叫 leaf。處理 tree 的標準寫法：base case 處理 leaf，recursive case 對每個 branch 遞迴，再用 sum、max 或 list comprehension 把結果組合起來。課程可能使用 tree() 函數抽象或 Tree class，以講義寫法為準。",
+    keys:["label","branches","is_leaf","path","tree recursion"],
+    code:`def count_leaves(t):
+    if is_leaf(t):
+        return 1
+    return sum([count_leaves(b) for b in branches(t)])
+
+def tree_max(t):
+    return max([label(t)] + [tree_max(b) for b in branches(t)])
+
+def double_tree(t):        # 回傳新的 tree
+    return tree(label(t) * 2,
+                [double_tree(b) for b in branches(t)])`,
+    pitfalls:["忘記 leaf 的 branches 是空 list，對空 list 用 max 會出錯","回傳新 tree 時直接修改原本的 tree","在 abstraction barrier 外用 t[0] 取 label"],
+    check:{q:"t = tree(1, [tree(2), tree(3, [tree(4)])])，count_leaves(t) 是多少？",a:"2。葉子是 2 和 4。"},
+    practice:"Discussion 5、Lab 5、HW 4（Quiz 4 範圍）", tip:"把 branches 想成「交給遞迴處理的子問題清單」，再用 sum / max / list comprehension 組合。"},
+   {zh:"Midterm 2 複習", en:"Midterm 2 Review", lec:"L16", st:"done",
+    subs:["整合 recursion、list、linked list","PrairieLearn 電腦考試形式","WWPD + 寫函數"],
+    what:"Midterm 2 在電腦考試中心（CBTF）以 PrairieLearn 進行，範圍到 L14 Linked Lists，題型包含寫函數與預測輸出。11/5–6 有補考機會。",
+    keys:["PrairieLearn","CBTF","retake"],
+    practice:"PrairieLearn 上的 practice midterm、Midterm 2 study guide", tip:"補考前把每一份 HW 從空白重寫一次。"}
+  ]},
+ {id:"u4", zh:"變動與物件導向", en:"Mutation & OOP", lec:"L17–26", st:"now", proj:"Project 3: Ants Vs. SomeBees",
+  what:"資料可以被改變之後，「兩個名稱指向同一個物件」就變得重要。接著學 class、attribute、inheritance，最後是 iterator、generator 與效率分析。Midterm 3 在 10/27。",
+  goals:["分辨 is 與 ==、建立副本與共用同一物件","設計 class，正確使用 self、instance / class attribute","用 inheritance 減少重複程式碼","使用 iterator 與 generator","估算程式的 order of growth"],
+  keys:["mutation","identity","class","inheritance","generator","efficiency"],
+  tip:"這個單元是目前進度。Ants 專案（10/23 截止）會大量使用 class 和 inheritance。",
+  topics:[
+   {zh:"問題解決", en:"Problem Solving", lec:"L17", st:"done",
+    subs:["先讀懂題目，寫出 2–3 個例子","找出適用的模板（遞迴、迭代、HOF）","逐步完成並用例子驗證"],
+    what:"整合前面所學的解題策略。重點不是背答案，而是建立固定的思考流程：理解題目 → 寫例子 → 選模板 → 寫程式 → 用例子檢查。",
+    keys:["examples first","templates","decomposition"],
+    practice:"Lecture 17 examples", tip:"考試時先寫 2–3 個小例子，再動手寫程式。"},
+   {zh:"變動", en:"Mutation", lec:"L18", st:"done", quiz:"Q5",
+    subs:["list 方法：append、extend、pop、remove","slice assignment：s[1:3] = [...]","is（同一物件）vs ==（值相等）","aliasing：兩個名稱指向同一物件","複製：list(s) 或 s[:]","nonlocal：在嵌套函數中修改外層名稱"],
+    what:"List 和 dict 可以就地修改。當 b = a 時，a 和 b 指向同一個 list，修改其中一個，另一個也會看到變化（aliasing）。is 檢查是否為同一個物件，== 只檢查值是否相等。要得到獨立的副本，必須明確複製。",
+    keys:["append","extend","pop","is vs ==","aliasing","shallow copy","nonlocal"],
+    code:`a = [1, 2]
+b = a           # 同一個 list
+c = a[:]        # 新的副本
+b.append(3)
+a               # [1, 2, 3]
+c               # [1, 2]
+a is b, a == c  # (True, False)
+
+s = [1, 2]
+s.append([3, 4])   # [1, 2, [3, 4]]
+s.extend([5, 6])   # [1, 2, [3, 4], 5, 6]`,
+    pitfalls:["以為 b = a 會複製 list","append 一個 list 會變成巢狀，要加多個元素應用 extend","append 回傳 None，s = s.append(1) 會把 s 變成 None","slice 只做淺層複製，內層 list 仍是共用的"],
+    check:{q:"a = [1, 2]；a.append([3, 4])；len(a) 是多少？",a:"3。[3, 4] 被當作一個元素加入。"},
+    practice:"HW 5、Lab 6（Quiz 5 範圍）", tip:"畫 box-and-pointer 圖：箭頭指向同一個盒子，就代表是同一個物件。"},
+   {zh:"類別", en:"Classes", lec:"L19", st:"done",
+    subs:["class 陳述式定義新型別","__init__ 在建立 instance 時執行","self 代表目前這個 instance","method：定義在 class 裡的函數","dot expression：obj.attr、obj.method()"],
+    what:"Class 是建立物件的藍圖。呼叫 class 會建立一個新 instance，並自動呼叫 __init__ 設定初始屬性。Method 的第一個參數 self 就是這個 instance；呼叫 obj.method(x) 時，Python 會自動把 obj 傳給 self。",
+    keys:["class","__init__","self","instance","method"],
+    code:`class Account:
+    interest = 0.02            # class attribute
+
+    def __init__(self, holder):
+        self.holder = holder   # instance attribute
+        self.balance = 0
+
+    def deposit(self, amount):
+        self.balance = self.balance + amount
+        return self.balance
+
+a = Account('Ada')
+a.deposit(100)    # 100
+Account.deposit(a, 50)   # 150，與 a.deposit(50) 相同`,
+    pitfalls:["定義 method 時忘記寫 self 參數","在 method 裡用 balance 而不是 self.balance"],
+    check:{q:"a.deposit(10) 和 Account.deposit(a, 10) 有什麼不同？",a:"效果相同。前者是 bound method，會自動把 a 傳給 self。"},
+    practice:"HW 6", tip:"把 self 想成「這一個帳戶」，每個 instance 有自己的 self.balance。"},
+   {zh:"屬性", en:"Attributes", lec:"L20", st:"next",
+    subs:["instance attribute vs class attribute","查找順序：先 instance，再 class","對 instance 賦值會新增 instance attribute","bound method vs function"],
+    what:"Class attribute 由所有 instance 共用；instance attribute 屬於單一物件。讀取 obj.x 時先找 instance，找不到再找 class。但「賦值」obj.x = ... 永遠只會設在 instance 上，不會改到 class attribute。",
+    keys:["instance attribute","class attribute","attribute lookup","bound method"],
+    code:`a = Account('Ada')
+b = Account('Bob')
+a.interest = 0.05     # 只在 a 上新增
+Account.interest = 0.04
+a.interest            # 0.05
+b.interest            # 0.04`,
+    pitfalls:["以為 a.interest = 0.05 會改到所有帳戶","搞混 Account.deposit（函數）與 a.deposit（bound method）"],
+    check:{q:"上例中再執行 Account.interest = 0.1，a.interest 與 b.interest 各是多少？",a:"a.interest 仍是 0.05（instance 自己的），b.interest 變成 0.1。"},
+    practice:"HW 6", tip:"屬性題目一律畫出 instance 和 class 兩個框，標清楚每個名稱住在哪一個框裡。"},
+   {zh:"繼承", en:"Inheritance", lec:"L21", st:"next",
+    subs:["subclass 繼承 base class 的屬性與 method","override：在 subclass 重新定義","super() 呼叫 parent 的版本","查找順序：instance → subclass → base class"],
+    what:"Subclass 會自動擁有 base class 的所有 attribute 與 method，只需寫出不同的部分。若 subclass 重新定義同名 method，就會覆蓋（override）base class 的版本；需要沿用原本行為時用 super()。",
+    keys:["subclass","base class","override","super()","is-a relationship"],
+    code:`# 假設 Account 已定義 withdraw(self, amount)
+class CheckingAccount(Account):
+    withdraw_fee = 1
+    interest = 0.01
+
+    def withdraw(self, amount):
+        return super().withdraw(amount + self.withdraw_fee)`,
+    pitfalls:["在 subclass 的 __init__ 忘記呼叫 super().__init__","把「has-a」關係誤用為繼承"],
+    check:{q:"CheckingAccount 的 instance 呼叫 deposit 時，用的是哪個 method？",a:"Account.deposit，因為 subclass 沒有定義 deposit，會往 base class 找。"},
+    practice:"HW 6、Project 3 Ants", tip:"Ants 專案的各種螞蟻都是 Ant 的 subclass，是練習繼承最好的地方。"},
+   {zh:"惰性求值與 Iterator", en:"Lazy Evaluation & Iterators", lec:"L22", st:"next",
+    subs:["iterable（可迭代）vs iterator（迭代器）","iter() 取得 iterator，next() 取下一個值","用完會丟出 StopIteration","map、filter、zip 是 lazy 的","for 迴圈底層就是 iter + next"],
+    what:"Iterator 一次只產生一個值，需要時才計算（lazy）。用 iter(s) 從 list 等 iterable 取得 iterator，再用 next() 逐一取值。map、filter 不會立刻算出全部結果，而是回傳 iterator。",
+    keys:["iter","next","StopIteration","iterable","map / filter / zip"],
+    code:`s = [1, 2, 3]
+t = iter(s)
+next(t)     # 1
+next(t)     # 2
+list(t)     # [3]，剩下的值
+next(t)     # StopIteration
+
+m = map(lambda x: x * x, s)   # 還沒計算
+list(m)     # [1, 4, 9]
+list(m)     # []，已經用完了`,
+    pitfalls:["對同一個 iterator 重複使用，以為會重新開始","以為 map 會立刻回傳 list"],
+    check:{q:"t = iter([1, 2, 3])；list(t)；list(t) 第二次回傳什麼？",a:"[]。iterator 已經走到底。"},
+    practice:"Lab 7", tip:"把 iterator 想成書籤，只會往前移動，不會倒退。"},
+   {zh:"Generator", en:"Generators", lec:"L23", st:"next",
+    subs:["含 yield 的函數會回傳 generator","每次 next() 執行到下一個 yield 暫停","yield from 逐一交出另一個 iterable 的值","可以表示無限序列","可以與遞迴結合"],
+    what:"Generator function 呼叫時不會立刻執行，而是回傳一個 generator。每次呼叫 next()，函數從上次暫停的地方繼續執行，直到遇到下一個 yield，交出那個值後再暫停。",
+    keys:["yield","yield from","generator function","infinite sequence"],
+    code:`def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+
+list(countdown(3))   # [3, 2, 1]
+
+def leaves(t):
+    if is_leaf(t):
+        yield label(t)
+    for b in branches(t):
+        yield from leaves(b)`,
+    pitfalls:["以為呼叫 generator function 會立刻執行函數本體","遞迴 generator 忘記 yield from，只得到 generator 物件"],
+    check:{q:"g = countdown(2)；next(g)；next(g)；next(g) 第三次會怎樣？",a:"丟出 StopIteration，因為只有 2 和 1 兩個值。"},
+    practice:"Discussion 7", tip:"Generator 常與遞迴結合，例如逐一產生一棵 tree 的所有路徑。"},
+   {zh:"效率", en:"Efficiency", lec:"L24", st:"next",
+    subs:["order of growth：常數、log、線性、平方、指數","Θ notation","計算函數被呼叫的次數","memoization：記住已算過的結果"],
+    what:"效率分析看的是：輸入變大時，執行時間「成長得多快」。例如逐一走過 list 是線性，雙重迴圈是平方，tree recursion 的 fib 是指數。Memoization 用 dict 記錄算過的結果，可以把指數時間降到線性。",
+    keys:["order of growth","Θ","exponential","memoization"],
+    code:`def memo(f):
+    cache = {}
+    def memoized(n):
+        if n not in cache:
+            cache[n] = f(n)
+        return cache[n]
+    return memoized
+
+@memo
+def fib(n):
+    if n <= 1:
+        return n
+    return fib(n - 2) + fib(n - 1)`,
+    pitfalls:["只看程式長度判斷效率","忽略迴圈內呼叫的函數本身也有成本"],
+    check:{q:"for i in range(n): for j in range(n): ... 的 order of growth？",a:"Θ(n²)，平方成長。"},
+    practice:"Lecture 24", tip:"Tree recursion 常是指數成長，memoization 可以大幅加速。"},
+   {zh:"物件範例與 Midterm 3 複習", en:"Object Examples & MT3 Review", lec:"L25–26", st:"next",
+    subs:["__repr__ 與 __str__","用 class 實作 linked list、tree","OOP 與遞迴結合"],
+    what:"整合 mutation、OOP、iterator 的範例。__str__ 決定 print 顯示的內容，__repr__ 決定互動式直譯器顯示的內容。Midterm 3 於 10/27 晚上 8–10 點舉行。",
+    keys:["__repr__","__str__","special methods"],
+    practice:"過去考題（Resources 頁面）", tip:"MT3 是 2 小時考試，比 MT1 長一倍，提前練習時間分配。"}
+  ]},
+ {id:"u5", zh:"函數式程式設計", en:"Functional Programming in Gleam", lec:"L27–30", st:"next", proj:"",
+  what:"換一個語言看同樣的概念：Gleam 是有靜態型別的函數式語言，資料不可變、沒有迴圈。學習 custom type、pattern matching，以及 interpreter 如何執行一個語言。",
+  goals:["讀寫基本的 Gleam 函數","用 case 做 pattern matching","用遞迴處理不可變的 list","理解 interpreter 的 parse / eval 流程"],
+  keys:["Gleam","immutable","static types","pattern matching","interpreter"],
+  tip:"前面 recursion、linked list 和 tree 的功夫在這裡會再用一次，只是換了語法。講義尚未公布，細節以官網為準。",
+  topics:[
+   {zh:"函數式程式設計", en:"Functional Programming", lec:"L27", st:"next", quiz:"Q6",
+    subs:["pure function：同樣輸入永遠同樣輸出","沒有 mutation、沒有迴圈","用遞迴代替迴圈","靜態型別：編譯時檢查","pipe 運算子 |>"],
+    what:"函數式程式設計強調 pure function 與不可變資料：不修改變數，而是建立新值；不用迴圈，而是用遞迴與高階函數。Gleam 是有靜態型別的語言，型別錯誤在執行前就會被發現。",
+    keys:["pure function","immutability","static typing","|>"],
+    code:`fn factorial(n: Int) -> Int {
+  case n {
+    0 -> 1
+    _ -> n * factorial(n - 1)
+  }
+}`,
+    pitfalls:["想用 Python 習慣修改變數或寫 while 迴圈","忽略型別標註（Int 與 Float 不能混用）"],
+    check:{q:"Gleam 中 1 + 1.5 會怎樣？",a:"編譯錯誤。Int 與 Float 的運算子不同（Float 用 +.）。"},
+    practice:"Discussion 8、HW 7", tip:"把它和 Python 的 HOF、recursion 對照著學，概念是相通的。"},
+   {zh:"代數資料型別", en:"Algebraic Data Types", lec:"L28", st:"next", quiz:"Q6",
+    subs:["custom type 可以有多個 variant","每個 variant 可帶不同欄位","case 依照 variant 做 pattern matching","編譯器檢查是否處理了所有 variant"],
+    what:"自訂型別可以定義多種形態（variants），例如 Shape 可以是 Circle 或 Square。用 case 依照實際是哪一種形態分別處理，編譯器會確認每一種情況都有處理到。",
+    keys:["custom type","variant","case","exhaustiveness"],
+    code:`pub type Shape {
+  Circle(radius: Float)
+  Square(side: Float)
+}
+
+fn area(s: Shape) -> Float {
+  case s {
+    Circle(r) -> 3.14 *. r *. r
+    Square(x) -> x *. x
+  }
+}`,
+    pitfalls:["case 漏掉某個 variant"],
+    check:{q:"若新增 Triangle variant 但沒改 area，會怎樣？",a:"編譯器會報錯，提醒 case 沒有處理 Triangle。"},
+    practice:"Lab 8", tip:"每個 variant 都要處理到，編譯器會提醒遺漏。"},
+   {zh:"不可變資料", en:"Immutable Data", lec:"L29", st:"next", quiz:"Q7",
+    subs:["Gleam 的 List 不可修改，只能建立新的","pattern [first, ..rest] 拆開 list","[x, ..xs] 在前面加入元素","list.map、list.filter、list.fold"],
+    what:"Gleam 的 list 結構與 Python 的 linked list 非常相似：要嘛是空的 []，要嘛是第一個元素加上剩下的 list。用 case 搭配 [first, ..rest] 拆開，再遞迴處理 rest。",
+    keys:["immutable list","[first, ..rest]","list.map","list.fold"],
+    code:`fn sum(xs: List(Int)) -> Int {
+  case xs {
+    [] -> 0
+    [first, ..rest] -> first + sum(rest)
+  }
+}`,
+    pitfalls:["想直接修改 list 中的某個元素"],
+    check:{q:"這個 sum 和 Python 的 sum_link 有什麼相同之處？",a:"結構完全相同：空串列回傳 0，否則 first 加上對 rest 的遞迴結果。"},
+    practice:"Discussion 9、HW 8", tip:"Linked list 學得好，這裡會很輕鬆。"},
+   {zh:"直譯器", en:"Interpreters", lec:"L30", st:"next",
+    subs:["parse：把文字轉成 expression tree","eval：依照規則對 expression 求值","apply：把函數套用到參數","REPL：read-eval-print loop"],
+    what:"直譯器是「執行程式的程式」。它先把原始碼文字 parse 成結構化的 expression tree，再遞迴地 eval：數字直接回傳，call expression 先求 operator 和 operands，再 apply。這正是 L2 學的求值規則，只是從實作者的角度來看。",
+    keys:["parse","eval","apply","REPL","expression tree"],
+    pitfalls:["把 parse（理解結構）與 eval（計算值）混為一談"],
+    check:{q:"直譯器處理 (2 + 3) * 4 時，eval 會先算哪一部分？",a:"先遞迴 eval 子運算式 2 + 3 得到 5，再計算 5 * 4。"},
+    practice:"Discussion 10", tip:"這裡把 L2 的「運算式如何求值」從使用者角度變成實作者角度。"}
+  ]},
+ {id:"u6", zh:"應用、資料庫與工程實務", en:"Applications, SQL & Engineering", lec:"L31–40", st:"next", proj:"Project 4: Animator（Python 或 TypeScript）",
+  what:"把前面的概念應用到真實系統：coding agents、瀏覽器與應用程式、SQL 資料庫，以及軟體測試與追蹤，最後討論科技倫理。",
+  goals:["了解 coding agent 的運作與限制","寫出基本的 SQL 查詢與彙總","為程式設計測試並追蹤錯誤"],
+  keys:["coding agents","TypeScript","SQL","testing","tracing"],
+  tip:"Quiz 8 考 SQL；Project 4 可選 Python 或 TypeScript 版本。講義尚未公布，細節以官網為準。",
+  topics:[
+   {zh:"Coding Agents", en:"Coding Agents", lec:"L31", st:"next",
+    subs:["LLM 搭配工具（讀檔、執行程式）的循環","給 agent 清楚的規格與測試","人工驗證 agent 的輸出"],
+    what:"了解 AI coding agent 如何結合語言模型與工具來完成程式任務，以及如何有效又負責任地使用它。",
+    keys:["agent","tool use","specification","verification"],
+    pitfalls:["未經檢查就接受 agent 產生的程式碼"],
+    practice:"Lab 9", tip:"Quiz 和考試仍然禁止使用 AI。平時練習若依賴 AI 完成作業，quiz 就會出問題。"},
+   {zh:"瀏覽器與應用程式", en:"Browsers & Applications", lec:"L32–33", st:"next",
+    subs:["網頁結構與瀏覽器如何顯示","TypeScript：有型別的 JavaScript","課程概念在實際應用中的樣貌"],
+    what:"網頁與瀏覽器如何運作，以及前面學到的抽象化、資料結構與物件如何出現在實際應用程式中。Project 4 提供 TypeScript 版本。",
+    keys:["browser","web app","TypeScript"],
+    practice:"Project 4 Animator", tip:"Animator 專案是這部分的主要練習。"},
+   {zh:"表格與 SQL", en:"Tables, SQL & Aggregation", lec:"L34–36", st:"next", quiz:"Q8",
+    subs:["SELECT … FROM … WHERE … ORDER BY","CREATE TABLE … AS","JOIN：合併多個表格","別名（AS）與 dot notation","GROUP BY + HAVING，搭配 COUNT / MAX / MIN / AVG"],
+    what:"SQL 是宣告式語言：描述「想要什麼結果」，而不是「如何一步步算出來」。用 SELECT 選欄位、WHERE 篩選列、JOIN 合併表格、GROUP BY 分組後做彙總。",
+    keys:["SELECT","WHERE","JOIN","GROUP BY","HAVING","aggregation"],
+    code:`SELECT name, COUNT(*) AS n
+FROM pets
+GROUP BY name
+HAVING n > 1
+ORDER BY n DESC;
+
+SELECT a.name, b.name
+FROM parents AS a, parents AS b
+WHERE a.child = b.child AND a.name < b.name;`,
+    pitfalls:["把 WHERE（篩選列）和 HAVING（篩選分組）混用","JOIN 時忘記寫連接條件，產生所有組合"],
+    check:{q:"WHERE 與 HAVING 的差別？",a:"WHERE 在分組前篩選每一列；HAVING 在 GROUP BY 之後篩選每一組。"},
+    practice:"Lab 10、HW 9（Quiz 8 範圍）", tip:"SQL 是描述「要什麼結果」，不是描述步驟，思考方式和 Python 不同。"},
+   {zh:"軟體測試", en:"Software Testing", lec:"L37", st:"next",
+    subs:["unit test：測試單一函數","邊界情況（edge cases）","測試先行的思考方式"],
+    what:"如何設計測試確認程式正確，包含一般情況與邊界情況（空輸入、0、最大值等）。這是 doctest 精神的延伸。",
+    keys:["unit test","edge case","assert"],
+    practice:"Lab 11", tip:"每寫一個函數，至少想 3 個測試：一般、最小、特殊。"},
+   {zh:"追蹤與除錯", en:"Software Tracing", lec:"L38", st:"next",
+    subs:["讀懂 traceback / error message","追蹤程式執行路徑","系統化地縮小錯誤範圍"],
+    what:"如何追蹤程式的執行過程，從錯誤訊息和執行紀錄中找出問題所在。",
+    keys:["traceback","debugging","tracing"],
+    practice:"Lecture 38", tip:"錯誤訊息最後一行說明錯誤類型，往上看可以找到出錯的行號。"},
+   {zh:"倫理與總結", en:"Ethics & Conclusion", lec:"L39–40", st:"next",
+    subs:["軟體與 AI 對社會的影響","整門課的主線回顧"],
+    what:"討論軟體與 AI 對社會的影響，並總結整門課的主線：abstraction 如何讓我們管理複雜度。",
+    keys:["ethics","abstraction"],
+    practice:"HW 10 Finale", tip:""}
+  ]},
+ {id:"u7", zh:"四個專案", en:"Projects", lec:"P1–P4", st:"", proj:"",
+  what:"四個專案是把概念用在較大程式上的主要練習，每個都有 checkpoint 和提早完成的加分。專案分數佔比高，不能只靠 quiz 和考試。",
+  goals:["讀懂既有的大型程式碼並在其中實作","按 checkpoint 分段完成","用 doctest / ok 測試逐步驗證"],
+  keys:["checkpoint","early bonus","ok autograder"],
+  tip:"每個專案都有 checkpoint 與提早提交加分，越早開始壓力越小。",
+  topics:[
+   {zh:"Hog（骰子遊戲）", en:"Project 1: The Game of Hog", lec:"9/17", st:"done",
+    subs:["Phase 1：實作遊戲規則與模擬器","Phase 2：設計並評估策略","練習 control、HOF"],
+    what:"實作一個雙人骰子遊戲，包含規則、回合模擬，以及用 higher-order functions 表示和比較不同策略。",
+    keys:["HOF","strategy function","simulation"],
+    practice:"25 分，已截止；可選 Hog Strategy Contest（10/12）", tip:"策略是「接收分數、回傳擲骰數」的函數，這正是 HOF 的應用。"},
+   {zh:"Cats（打字測速）", en:"Project 2: Computer Aided Typing Software", lec:"10/2", st:"done",
+    subs:["字串與 list 處理","自動校正：找出最接近的單字","遞迴計算兩個字的差距（edit distance）"],
+    what:"實作一個打字速度測試程式，包含準確度與速度計算，以及用遞迴計算兩個單字差距來做自動校正。",
+    keys:["strings","lists","recursion","edit distance"],
+    practice:"已截止", tip:"edit distance 是 tree recursion 的典型應用：每一步嘗試新增、刪除、替換三種操作。"},
+   {zh:"Ants（塔防遊戲）", en:"Project 3: Ants Vs. SomeBees", lec:"10/23", st:"now",
+    subs:["各種 Ant 是 subclass","class attribute 與 instance attribute","override 與 super()"],
+    what:"實作類似塔防的遊戲，螞蟻保護蟻巢抵擋蜜蜂。各種螞蟻都繼承自 Ant，是練習 OOP 的主要專案。",
+    keys:["OOP","inheritance","class attribute"],
+    practice:"Checkpoint 1：10/16；Checkpoint 2：10/21；截止 10/23", tip:"先讀完提供的程式碼，畫出 class 的繼承關係圖再開始寫。"},
+   {zh:"Animator", en:"Project 4: Animator", lec:"11/23 · 12/1", st:"next",
+    subs:["可選 Python 版或 TypeScript 版","Python 版 11/23 截止","TypeScript 版 12/1 截止"],
+    what:"學期最後的專案，有 Python 與 TypeScript 兩個版本可選。具體內容以官網公布為準。",
+    keys:["Python","TypeScript"],
+    practice:"Checkpoint：11/13", tip:"專案說明公布後再決定版本；沒有 JavaScript 經驗可以先選 Python 版。"}
+  ]}
+];
+
+const ST = {done:"已教完", now:"進行中", next:"尚未開始"};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+document.getElementById("chips").innerHTML = EXAMS.map(e =>
+  `<span class="chip ${e.st} ${e.exam?'exam':''}"><b>${esc(e.k)}</b><span class="d">${esc(e.d)}</span>${esc(e.s)}${e.st==='next'?' · 下一次':''}</span>`
+).join("");
+
+const tree = document.getElementById("tree");
+const reg = new Map();
+let n = 0;
+const key = obj => { const k = "n"+(n++); reg.set(k,obj); return k; };
+
+let html = `<div class="branch"><button type="button" class="node root" data-k="${key({...ROOT, kind:'root'})}"><span class="zh">${ROOT.zh}</span><span class="en">${ROOT.en}</span></button><div class="children">`;
+UNITS.forEach((u,i) => {
+  const label = u.id==='u7' ? 'PROJECTS' : `UNIT ${i+1} · ${u.lec}`;
+  html += `<div class="branch" data-unit="${u.id}"><button type="button" class="node unit ${u.st||'proj'}" aria-expanded="true" data-k="${key({...u, kind:'unit'})}"><span class="tag">${label}</span><span class="zh">${esc(u.zh)}</span><span class="en">${esc(u.en)}</span><span class="tw" aria-hidden="true">−</span></button><div class="children">`;
+  u.topics.forEach(t => {
+    const subs = (t.subs||[]).map(s=>`<li>${esc(s)}</li>`).join("");
+    html += `<div class="branch"><button type="button" class="node leaf" data-k="${key({...t, kind:'topic', unit:u})}"><span class="row"><i class="dot ${t.st}"></i><span class="t">${esc(t.zh)}</span>${t.quiz?`<span class="qb">${t.quiz}</span>`:''}<span class="lec">${esc(t.lec)}</span></span><span class="en">${esc(t.en)}</span>${subs?`<ul>${subs}</ul>`:''}</button></div>`;
+  });
+  html += `</div></div>`;
+});
+html += `</div></div>`;
+tree.innerHTML = html;
+
+const detail = document.getElementById("detail");
+const list = (arr, cls) => arr && arr.length ? `<ul${cls?` class="${cls}"`:''}>${arr.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>` : "";
+function render(o){
+  const terms = (o.keys||[]).map(k=>`<span>${esc(k)}</span>`).join("");
+  const tag = o.kind==='root' ? 'COURSE OVERVIEW' : o.kind==='unit' ? (o.id==='u7'?'PROJECTS':`UNIT · ${o.lec}`) : `${o.lec} · ${o.unit.en}`;
+  detail.innerHTML = `
+    <div class="tag">${esc(tag)}</div>
+    <h3>${esc(o.zh)}</h3>
+    <p class="en">${esc(o.en)}</p>
+    ${o.st?`<div class="status"><i class="dot ${o.st}"></i>${ST[o.st]}${o.quiz?` · 為 ${o.quiz} 範圍`:''}</div>`:''}
+    <p>${esc(o.what)}</p>
+    ${o.goals?`<h4>學完應該能做到 Goals</h4>${list(o.goals)}`:''}
+    ${o.subs?`<h4>重點 Key points</h4>${list(o.subs)}`:''}
+    ${terms?`<h4>關鍵詞 Key terms</h4><div class="terms">${terms}</div>`:''}
+    ${o.code?`<h4>範例 Example</h4><pre><code>${esc(o.code)}</code></pre>`:''}
+    ${o.pitfalls?`<h4>常見錯誤 Common mistakes</h4>${list(o.pitfalls,'warn')}`:''}
+    ${o.check?`<h4>自我檢測 Self-check</h4><details class="check"><summary>先自己想，再點開答案</summary><p class="q">${esc(o.check.q)}</p><p class="a">${esc(o.check.a)}</p></details>`:''}
+    ${o.practice?`<h4>對應練習 Practice</h4><p style="margin:0">${esc(o.practice)}</p>`:''}
+    ${o.proj?`<h4>對應專案 Project</h4><p style="margin:0">${esc(o.proj)}</p>`:''}
+    ${o.tip?`<h4>學習提示 Tip</h4><p class="tip">${esc(o.tip)}</p>`:''}
+    ${o.kind==='topic' ? practiceLink(o) : ''}
+  `;
+  document.getElementById("detailbox").scrollTop = 0;
+}
+render({...ROOT, kind:'root'});
+
+let selected = tree.querySelector(".root");
+selected.classList.add("sel");
+tree.addEventListener("click", e => {
+  const btn = e.target.closest(".node"); if(!btn) return;
+  const o = reg.get(btn.dataset.k);
+  if(o.kind==='unit'){
+    const br = btn.parentElement;
+    const was = br.classList.toggle("collapsed");
+    btn.setAttribute("aria-expanded", String(!was));
+    btn.querySelector(".tw").textContent = was ? "+" : "−";
+  }
+  selected && selected.classList.remove("sel");
+  btn.classList.add("sel"); selected = btn;
+  render(o);
+  if(o.kind==='topic' && isStacked()) setFs(true);
+});
+function setAll(collapsed){
+  tree.querySelectorAll("[data-unit]").forEach(br=>{
+    br.classList.toggle("collapsed", collapsed);
+    const b = br.querySelector(".unit");
+    b.setAttribute("aria-expanded", String(!collapsed));
+    b.querySelector(".tw").textContent = collapsed ? "+" : "−";
+  });
+}
+document.getElementById("expandAll").onclick = ()=>setAll(false);
+document.getElementById("collapseAll").onclick = ()=>setAll(true);
+const cb = document.getElementById("compact");
+cb.onclick = ()=>{ const on = tree.classList.toggle("compact"); cb.setAttribute("aria-pressed", String(on)); cb.textContent = on ? "顯示子重點" : "只看主題"; };
+
+/* ---------- topic index ---------- */
+const TOPICS = {};
+UNITS.forEach(u => u.topics.forEach(t => {
+  const nums = (t.lec.match(/\d+/g) || []).map(Number);
+  TOPICS[t.en] = {...t, unit:u, L: u.id==='u7' ? null : Math.max(...nums)};
+}));
+
+/* ---------- exams ---------- */
+const EXAM_FILTERS = [
+  {v:"", label:"全部考試範圍"},
+  {v:"Q4", label:"Quiz 4 · 10/12 Recursive Data（下一次）", topics:["Linked Lists","Trees"]},
+  {v:"Q5", label:"Quiz 5 · 10/19 Mutation", topics:["Mutation"]},
+  {v:"MT2", label:"Midterm 2 補考 · 11/5–6（至 L14）", maxL:14},
+  {v:"MT3", label:"Midterm 3 · 10/27（推測至 L25）", maxL:25},
+  {v:"Q6", label:"Quiz 6 · 11/9 Gleam", topics:["Functional Programming","Algebraic Data Types"]},
+  {v:"Q7", label:"Quiz 7 · 11/16 Gleam Data", topics:["Immutable Data"]},
+  {v:"Q8", label:"Quiz 8 · 11/30 SQL", topics:["Tables, SQL & Aggregation"]},
+  {v:"FINAL", label:"期末考 · 12/18（全學期）"}
+];
+function inExam(q, v){
+  if(!v || v==="FINAL") return true;
+  const f = EXAM_FILTERS.find(x=>x.v===v); const t = TOPICS[q.t];
+  if(f.topics) return f.topics.includes(q.t);
+  if(f.maxL) return t && t.L !== null && t.L <= f.maxL;
+  return true;
+}
+
+const QUIZZES = [
+  {k:"Q1", d:"9/8", topic:"Functions", hw:"HW 1 Q4 hailstone", st:"past"},
+  {k:"Q2", d:"9/21", topic:"Higher-Order Functions", hw:"HW 2 composite_identity", st:"past"},
+  {k:"Q3", d:"9/28", topic:"Recursion", hw:"HW 3 Count Coins", st:"past"},
+  {k:"Q4", d:"10/12", topic:"Recursive Data（Linked Lists、Trees）", hw:"HW 4（預計）", st:"next"},
+  {k:"Q5", d:"10/19", topic:"Mutation", hw:"HW 5（預計）", st:""},
+  {k:"Q6", d:"11/9", topic:"Gleam", hw:"HW 7（預計）", st:""},
+  {k:"Q7", d:"11/16", topic:"Gleam Data", hw:"HW 8（預計）", st:""},
+  {k:"Q8", d:"11/30", topic:"SQL", hw:"HW 9（預計）", st:""}
+];
+const ASSESS = [
+  {k:"Midterm 1", st:"past", date:"9/14（一）20:00–21:00", pts:20, fmt:"紙本考試",
+   scope:"L1–6 與課本 1.1–1.6（不含 Newton's Method 範例）。官方提供 study guide 與草稿紙。",
+   types:["WWPD 預測輸出","環境圖","高階函數填空題"],
+   prep:["已考完。若成績不理想，期末考的 exam recovery 可以拉高這個分數"], f:"FINAL"},
+  {k:"Midterm 2", st:"past", date:"10/5–10/9（自選 1 小時時段）", pts:20, fmt:"電腦考試中心 CBTF，使用 PrairieLearn",
+   scope:"至 L14 Linked Lists：函數、HOF、遞迴、tree recursion、list、container、linked list。",
+   types:["寫函數","WWPD 預測輸出"],
+   prep:["已考完。官方說明這次可以錯一題仍拿滿分"], f:"MT2"},
+  {k:"Midterm 2 補考", st:"", date:"11/5–11/6", pts:null, fmt:"電腦考試中心 CBTF",
+   scope:"與 Midterm 2 相同（至 L14）。",
+   types:["寫函數","WWPD 預測輸出"],
+   prep:["把 HW 1–4 每一題從空白重寫一次，不看筆記、不用 AI","重做 PrairieLearn 上的 practice midterm","用下方練習題的「Midterm 2 補考」篩選逐題練習"],
+   note:"課程進度表列有這次補考；syllabus 則寫「no retakes」並提供 exam recovery。兩者不一致，報名前請先看 Ed 上的公告確認規則。", f:"MT2"},
+  {k:"Midterm 3", st:"", date:"10/27（二）20:00–22:00", pts:45, fmt:"紙本考試，2 小時",
+   scope:"官網尚未公布範圍。L26 是 Midterm 3 複習課，推測涵蓋至 L25（Mutation、Classes、Attributes、Inheritance、Iterators、Generators、Efficiency），並可能包含前面的內容。",
+   types:["WWPD 預測輸出（含 mutation 與 class 屬性）","環境圖 / box-and-pointer 圖","填空式寫函數與寫 class"],
+   prep:["熟練 box-and-pointer 圖：哪些名稱指向同一個 list","練習 instance attribute 與 class attribute 的查找與賦值","完成 Project 3 Ants，這是練 OOP 最好的方式","10/26 的 L26 複習課一定要看","做 Resources 頁面上的過去考題，練習 2 小時的時間分配"], f:"MT3"},
+  {k:"期末考 Final", st:"", date:"12/18（五）11:30–14:30", pts:75, fmt:"紙本考試，3 小時；時間衝突可改 15:00–18:00",
+   scope:"全學期內容。",
+   types:["所有前面的題型","Gleam 與 SQL"],
+   prep:["期末考分數最高（75 分），也是 exam recovery 的依據","從 Midterm 1 的內容開始依序複習，每個單元做過去考題"], f:"FINAL"}
+];
+const GRADES = [
+  ["期末考 Final（紙本）",75],["四個專案 Projects",100],["Midterm 3（紙本）",45],["Midterm 1（紙本）",20],["Midterm 2（電腦）",20],
+  ["Quizzes（8 次取最好 5 次）",10],["Homework",10],["Lab",10],["Discussion",10]
+];
+
+function practiceCount(filter){ return QUESTIONS.filter(q=>inExam(q,filter)).length; }
+function renderExams(){
+  const el = document.getElementById("view-exams");
+  const qRows = QUIZZES.map(q=>`<tr class="${q.st}"><td><b>${q.k}</b></td><td>${q.d}</td><td>${esc(q.topic)}</td><td>${esc(q.hw)}</td><td>${q.st==='past'?'<span class="pill past">已考</span>':q.st==='next'?'<span class="pill next">下一次</span>':''}</td></tr>`).join("");
+  const gRows = GRADES.map(([n,p])=>`<tr><td>${n}</td><td class="num">${p}</td><td class="num">${(p/300*100).toFixed(1)}%</td></tr>`).join("");
+  const cards = ASSESS.map(a=>`
+    <article class="panel ${a.st}">
+      <h3>${esc(a.k)}</h3>
+      <div class="meta"><span><b>${esc(a.date)}</b></span>${a.pts?`<span>${a.pts} 分</span>`:''}<span>${esc(a.fmt)}</span>${a.st==='past'?'<span class="pill past">已考</span>':''}</div>
+      <h4>範圍 Scope</h4><p>${esc(a.scope)}</p>
+      <h4>題型 Question types</h4><ul>${a.types.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      <h4>準備方法 How to prepare</h4><ul>${a.prep.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      ${a.note?`<p class="note">${esc(a.note)}</p>`:''}
+      <div class="qact"><button type="button" class="goto" data-exam="${a.f}">練習這個範圍的題目（${practiceCount(a.f)} 題）</button></div>
+    </article>`).join("");
+  el.innerHTML = `
+  <div class="ex-grid">
+    <article class="panel">
+      <h3>評分結構 Grading</h3>
+      <div class="meta"><span>總分 <b>300</b> 分</span><span>沒有曲線（no curve）</span></div>
+      <div class="tblwrap"><table><thead><tr><th>項目</th><th class="num">分數</th><th class="num">佔比</th></tr></thead><tbody>${gRows}</tbody></table></div>
+      <h4>等第門檻 Letter grades</h4>
+      <p style="font-variant-numeric:tabular-nums">A ≥ 285 · A− ≥ 270 · B+ ≥ 255 · B ≥ 230 · B− ≥ 210 · C+ ≥ 190 · C ≥ 180</p>
+      <h4>這代表什麼</h4>
+      <ul>
+        <li>Quiz 全部只有 10 分，一次不及格對總分影響很小；但它反映「能否獨立寫出作業題」</li>
+        <li>四次考試合計 160 分（53%），期末考 75 分最重</li>
+        <li>專案 100 分，提早提交另有最多 4 分 extra credit</li>
+        <li><b>Exam recovery</b>：midterm 分數可以提高到期末考百分比的 90%，所以前面考不好，期末考仍有機會補回</li>
+      </ul>
+    </article>
+    <article class="panel">
+      <h3>Quiz 規則與時間表</h3>
+      <p>多數週次在 lab 時間進行，每次 10 分鐘、一題，題目是某題作業的小變化。用自己的電腦作答，不可使用 AI，也不可請別人幫忙。作答時切換分頁或貼上答案，會直接判定不通過。8 次中最好的 5 次計分。</p>
+      <div class="tblwrap"><table><thead><tr><th>#</th><th>日期</th><th>主題</th><th>對應作業</th><th></th></tr></thead><tbody>${qRows}</tbody></table></div>
+      <p class="note">Q1–Q3 的對應作業來自官網公告；Q4 之後依「quiz 是作業變化題」的規則推測。</p>
+      <div class="qact"><button type="button" class="goto" data-exam="Q4">練習 Quiz 4 範圍（${practiceCount("Q4")} 題）</button></div>
+    </article>
+    ${cards}
+    <article class="panel wide">
+      <h3>作答規範 Rules that matter</h3>
+      <ul>
+        <li>作業搭配 AI tutor「Preceptor」完成，它會針對你的程式提問；不通過可改在 lab 或 office hours 由助教口試</li>
+        <li>禁止使用 GitHub Copilot、ChatGPT 等工具填寫或修改程式碼；「Provenance」擴充功能會記錄作答過程，並需隨作業一起提交</li>
+        <li>可以討論，但不可看別人的程式碼（lab、專案夥伴、或自己已完成後幫助別人除外）；專案可以兩人一組 pair programming</li>
+        <li>考試中協作，整科成績為 F</li>
+        <li>需要延期，在截止前到 links.cs61a.org/extensions 申請，24 小時內的延期會直接批准；lab 和作業逾期不給分，專案 48 小時內提交得 75%</li>
+      </ul>
+    </article>
+  </div>`;
+}
+
+/* ---------- practice questions ---------- */
+const LV = {1:"基礎", 2:"進階", 3:"考試級"};
+const TYPE = {wwpd:"WWPD", code:"寫程式", concept:"觀念", sql:"SQL"};
+const QUESTIONS = [
+ // Unit 1
+ {t:"Expressions & Evaluation", type:"wwpd", lv:1, title:"巢狀函數呼叫",
+  q:"下面的運算式，Python 會顯示什麼？",
+  code:`>>> from operator import add, mul
+>>> mul(add(1, 2), add(mul(2, 2), 1))`,
+  ans:`15`, why:"由內而外：add(1, 2) 是 3；mul(2, 2) 是 4，add(4, 1) 是 5；最後 mul(3, 5) 是 15。"},
+ {t:"Print vs Return, None", type:"wwpd", lv:1, title:"函數同時 print 與 return",
+  q:"依序寫出螢幕上會出現的每一行。",
+  code:`>>> def f(x):
+...     print(x)
+...     return x * 2
+>>> f(f(1))`,
+  ans:`1
+2
+4`, why:"先求內層 f(1)：印出 1，回傳 2。再呼叫 f(2)：印出 2，回傳 4。最後互動式直譯器顯示回傳值 4。"},
+ {t:"Print vs Return, None", type:"wwpd", lv:2, title:"沒有 return 的函數",
+  q:"依序寫出螢幕上會出現的每一行。",
+  code:`>>> def g():
+...     print('a')
+>>> x = g()
+>>> print(x, g())`,
+  hint:"g 沒有 return，所以回傳 None。print 要先把所有參數求值完，才會開始印。",
+  ans:`a
+a
+None None`, why:"x = g() 印出 a，x 是 None。接著 print(x, g()) 先求參數：g() 再印一次 a 並回傳 None，最後 print 印出 None None。"},
+ {t:"Names & Assignment", type:"wwpd", lv:1, title:"多重賦值",
+  code:`>>> a, b = 3, 4
+>>> a, b = a + b, a
+>>> print(a, b)`,
+  q:"Python 會印出什麼？",
+  ans:`7 3`, why:"右邊先全部求值：a + b 是 7，a 是 3，然後才同時綁定給 a 和 b。"},
+ {t:"Control: if / while / Booleans", type:"wwpd", lv:2, title:"and / or 回傳的是什麼",
+  q:"三行分別印出什麼？",
+  code:`>>> print(1 and 2 or 3)
+>>> print(0 and 1/0 or 'x')
+>>> print(not 0 or 5)`,
+  hint:"and 遇到 falsy 就停，or 遇到 truthy 就停，回傳最後被求值的運算元。not 的優先順序比 or 高。",
+  ans:`2
+x
+True`, why:"1 and 2 是 2，2 or 3 停在 2。0 and ... 停在 0，不會求 1/0，0 or 'x' 得到 'x'。not 0 是 True，True or 5 停在 True。"},
+ {t:"Control: if / while / Booleans", type:"code", lv:1, title:"count_matches",
+  q:"用 while 迴圈完成函數，計算 n 中有幾個位數等於 d。",
+  code:`def count_matches(n, d):
+    """Count the digits of n that equal d.
+
+    >>> count_matches(12321, 2)
+    2
+    >>> count_matches(1000, 0)
+    3
+    >>> count_matches(7, 3)
+    0
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"n % 10 取最後一位，n // 10 去掉最後一位。",
+  ans:`def count_matches(n, d):
+    count = 0
+    while n > 0:
+        if n % 10 == d:
+            count += 1
+        n = n // 10
+    return count`, why:"每一圈檢查最後一位，再把它去掉，直到 n 變成 0。"},
+ {t:"Control: if / while / Booleans", type:"code", lv:2, title:"has_adjacent_same",
+  q:"判斷 n 中是否有兩個相鄰且相同的位數。",
+  code:`def has_adjacent_same(n):
+    """
+    >>> has_adjacent_same(1223)
+    True
+    >>> has_adjacent_same(1213)
+    False
+    >>> has_adjacent_same(990)
+    True
+    >>> has_adjacent_same(5)
+    False
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"同時看最後一位（n % 10）和倒數第二位（(n // 10) % 10）。迴圈條件要確保至少還有兩位數。",
+  ans:`def has_adjacent_same(n):
+    while n >= 10:
+        if n % 10 == (n // 10) % 10:
+            return True
+        n = n // 10
+    return False`, why:"n >= 10 代表至少有兩位數。找到就立刻 return True；全部檢查完都沒有才回傳 False。注意 return False 必須在迴圈外。"},
+ {t:"Higher-Order Functions", type:"wwpd", lv:1, title:"把 lambda 傳給 lambda",
+  q:"Python 會顯示什麼？",
+  code:`>>> (lambda f: f(f(3)))(lambda x: x + 2)`,
+  ans:`7`, why:"外層 lambda 的 f 綁定為 lambda x: x + 2。f(3) 是 5，f(5) 是 7。"},
+ {t:"Higher-Order Functions", type:"code", lv:1, title:"curry2",
+  q:"把接收兩個參數的函數 f 轉成 curried 形式。",
+  code:`def curry2(f):
+    """
+    >>> from operator import add
+    >>> curry2(add)(3)(4)
+    7
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`def curry2(f):
+    return lambda x: lambda y: f(x, y)`, why:"curry2(f) 回傳一個接收 x 的函數；它再回傳一個接收 y 的函數；最後才呼叫 f(x, y)。"},
+ {t:"Higher-Order Functions", type:"code", lv:2, title:"apply_n",
+  q:"回傳一個函數，它會把 f 連續套用 n 次。n 為 0 時回傳原值。",
+  code:`def apply_n(f, n):
+    """
+    >>> double = lambda x: x * 2
+    >>> apply_n(double, 3)(1)
+    8
+    >>> apply_n(double, 0)(5)
+    5
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"在 apply_n 裡面定義一個接收 x 的函數 g，用 while 迴圈把 f 套用 n 次，最後回傳 g（不是 g()）。",
+  ans:`def apply_n(f, n):
+    def g(x):
+        k = 0
+        while k < n:
+            x, k = f(x), k + 1
+        return x
+    return g`, why:"g 是 closure，記得外層的 f 和 n。apply_n 必須回傳函數 g 本身，呼叫者再傳入起始值。"},
+ {t:"Higher-Order Functions", type:"code", lv:3, title:"count_cond",
+  q:"count_cond 接收一個雙參數條件函數 condition(n, i)，回傳一個函數：給定 n，計算 1 到 n 之間有多少個 i 使 condition(n, i) 為真。",
+  code:`def count_cond(condition):
+    """
+    >>> count_factors = count_cond(lambda n, i: n % i == 0)
+    >>> count_factors(12)    # 1, 2, 3, 4, 6, 12
+    6
+    >>> count_factors(7)
+    2
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"結構與 apply_n 相同：內層函數接收 n，用 i 從 1 數到 n。",
+  ans:`def count_cond(condition):
+    def counter(n):
+        i, count = 1, 0
+        while i <= n:
+            if condition(n, i):
+                count += 1
+            i += 1
+        return count
+    return counter`, why:"把「從 1 到 n 計數」的共同模式抽出來，具體條件交給呼叫者傳入，這就是 HOF 的用途。"},
+ {t:"Environments & Environment Diagrams", type:"wwpd", lv:3, title:"閉包看到的是哪個 x",
+  q:"Python 會印出什麼？畫出環境圖再作答。",
+  code:`x = 10
+def outer(x):
+    def inner(y):
+        return x + y
+    x = x * 2
+    return inner
+print(outer(1)(5))`,
+  hint:"inner 的 parent 是哪個 frame？inner 被呼叫時，那個 frame 裡的 x 是多少？",
+  ans:`7`, why:"呼叫 outer(1) 建立 frame f1，x = 1；定義 inner（parent 是 f1）；接著 f1 的 x 被改成 2。之後呼叫 inner(5) 時，在 f1 找到 x = 2，所以是 2 + 5。名稱是在「呼叫時」查找的，不是定義時複製下來的。"},
+ {t:"Environments & Environment Diagrams", type:"wwpd", lv:2, title:"lambda 與後來的賦值",
+  q:"Python 會印出什麼？",
+  code:`y = 1
+f = lambda x: x + y
+y = 5
+print(f(1))`,
+  ans:`6`, why:"lambda 的 parent 是 Global frame。呼叫 f(1) 時才去找 y，那時 y 已經是 5。"},
+ {t:"Environments & Environment Diagrams", type:"concept", lv:2, title:"parent frame 是誰",
+  q:"在上一題 outer / inner 的例子中，呼叫 inner(5) 時建立的 frame，它的 parent 是哪一個 frame？為什麼不是 Global？",
+  ans:`f1（呼叫 outer(1) 時建立的 frame）`, why:"函數的 parent 由「定義的位置」決定。inner 是在執行 outer 時（也就是 f1 中）被定義的，所以它的 parent 永遠是 f1，與它在哪裡被呼叫無關。"},
+ // Unit 2
+ {t:"Recursive Functions", type:"code", lv:1, title:"sum_even_digits",
+  q:"用遞迴（不可用迴圈）計算 n 中所有偶數位數的總和。",
+  code:`def sum_even_digits(n):
+    """
+    >>> sum_even_digits(2468)
+    20
+    >>> sum_even_digits(1357)
+    0
+    >>> sum_even_digits(120)
+    2
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"Base case：n 為 0 時總和是 0。Recursive case：先算 n // 10 的結果，再決定要不要加上最後一位。",
+  ans:`def sum_even_digits(n):
+    if n == 0:
+        return 0
+    last = n % 10
+    rest = sum_even_digits(n // 10)
+    if last % 2 == 0:
+        return rest + last
+    return rest`, why:"Leap of faith：假設 sum_even_digits(n // 10) 已經正確，這一層只需要處理最後一位。"},
+ {t:"Recursive Functions", type:"code", lv:2, title:"is_sorted",
+  q:"用遞迴判斷 n 的位數是否由左到右不遞減。",
+  code:`def is_sorted(n):
+    """
+    >>> is_sorted(1234)
+    True
+    >>> is_sorted(1122)
+    True
+    >>> is_sorted(1324)
+    False
+    >>> is_sorted(7)
+    True
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"一位數一定是排好的。否則比較最後兩位，再遞迴檢查去掉最後一位後的數字。",
+  ans:`def is_sorted(n):
+    if n < 10:
+        return True
+    last, second = n % 10, (n // 10) % 10
+    return second <= last and is_sorted(n // 10)`, why:"and 的短路求值：最後兩位已經不符合時，就不必再遞迴。"},
+ {t:"Recursive Functions", type:"concept", lv:2, title:"找出錯誤",
+  q:"下面的 fact 有什麼問題？呼叫 fact(2) 會發生什麼？",
+  code:`def fact(n):
+    if n == 0:
+        return 1
+    n * fact(n - 1)`,
+  ans:`TypeError（unsupported operand: int * NoneType）`, why:"recursive case 少了 return，所以 fact(1) 回傳 None。fact(2) 計算 2 * fact(1) 就是 2 * None，產生 TypeError。這是遞迴最常見的錯誤之一。"},
+ {t:"Order of Recursive Calls", type:"wwpd", lv:2, title:"zigzag",
+  q:"zigzag(3) 會印出什麼？",
+  code:`def zigzag(n):
+    print(n)
+    if n > 1:
+        zigzag(n - 1)
+        print(n)
+
+zigzag(3)`,
+  hint:"遞迴呼叫前的 print 在「往下」時執行；呼叫後的 print 要等內層全部結束，在「往回」時執行。",
+  ans:`3
+2
+1
+2
+3`, why:"往下：印 3、2、1（n = 1 時不再遞迴，也不印第二次）。往回：n = 2 那層印 2，n = 3 那層印 3。"},
+ {t:"Tree Recursion", type:"code", lv:1, title:"count_stair_ways",
+  q:"每次可以爬 1 階或 2 階，爬完 n 階樓梯共有幾種方法？",
+  code:`def count_stair_ways(n):
+    """
+    >>> count_stair_ways(3)    # 1+1+1, 1+2, 2+1
+    3
+    >>> count_stair_ways(5)
+    8
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"第一步爬 1 階，或第一步爬 2 階，兩種情況的方法數相加。剛好爬完算 1 種，爬過頭算 0 種。",
+  ans:`def count_stair_ways(n):
+    if n == 0:
+        return 1
+    if n < 0:
+        return 0
+    return count_stair_ways(n - 1) + count_stair_ways(n - 2)`, why:"這是 tree recursion 最基本的形式：每一層分出兩個子問題，結果相加。"},
+ {t:"Tree Recursion", type:"code", lv:2, title:"count_paths",
+  q:"在 m 列 n 行的方格中，從左上角走到右下角，每次只能往右或往下，共有幾條路徑？",
+  code:`def count_paths(m, n):
+    """
+    >>> count_paths(2, 2)
+    2
+    >>> count_paths(3, 3)
+    6
+    >>> count_paths(1, 5)
+    1
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"只剩一列或一行時，只有一條路。否則第一步往下或往右。",
+  ans:`def count_paths(m, n):
+    if m == 1 or n == 1:
+        return 1
+    return count_paths(m - 1, n) + count_paths(m, n - 1)`, why:"往下走等於剩下 (m - 1) × n 的方格，往右走等於剩下 m × (n - 1) 的方格。"},
+ {t:"Tree Recursion", type:"code", lv:3, title:"distinct_partitions（Count Coins 變化題）",
+  q:"用不超過 m、且彼此不重複的正整數加總成 n，有幾種方式？例如 5 = 5 = 4+1 = 3+2，共 3 種。",
+  code:`def distinct_partitions(n, m):
+    """
+    >>> distinct_partitions(5, 5)
+    3
+    >>> distinct_partitions(6, 6)    # 6, 5+1, 4+2, 3+2+1
+    4
+    >>> distinct_partitions(6, 3)    # 3+2+1
+    1
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"和 count_partitions 幾乎一樣，只差一個地方：用了 m 之後，m 還能再用嗎？",
+  ans:`def distinct_partitions(n, m):
+    if n == 0:
+        return 1
+    if n < 0 or m == 0:
+        return 0
+    with_m = distinct_partitions(n - m, m - 1)
+    without_m = distinct_partitions(n, m - 1)
+    return with_m + without_m`, why:"在 count_partitions 中，用了 m 之後下一層仍是 m（可重複使用）；這裡要求不重複，所以用了 m 之後變成 m - 1。quiz 的「作業變化題」通常就是這種一處改動。"},
+ {t:"Tree Recursion", type:"concept", lv:2, title:"fib 被呼叫幾次",
+  q:"用下面的寫法計算 fib(5)，fib 一共被呼叫幾次（包含第一次）？",
+  code:`def fib(n):
+    if n <= 1:
+        return n
+    return fib(n - 2) + fib(n - 1)`,
+  hint:"設 C(n) 是計算 fib(n) 的呼叫次數，則 C(0) = C(1) = 1，C(n) = 1 + C(n - 2) + C(n - 1)。",
+  ans:`15`, why:"C(2) = 3、C(3) = 5、C(4) = 9、C(5) = 15。呼叫次數以指數成長，這就是 Efficiency 單元要用 memoization 改善的原因。"},
+ // Unit 3
+ {t:"Sequences & Lists", type:"wwpd", lv:1, title:"indexing 與 slicing",
+  q:"Python 會印出什麼？",
+  code:`>>> s = [1, 2, 3, 4, 5]
+>>> print(s[1:4], s[::2], s[-2])`,
+  ans:`[2, 3, 4] [1, 3, 5] 4`, why:"s[1:4] 取 index 1 到 3；s[::2] 每隔一個取；s[-2] 是倒數第二個。"},
+ {t:"Sequences & Lists", type:"wwpd", lv:1, title:"list comprehension",
+  q:"Python 會顯示什麼？",
+  code:`>>> [x * x for x in [3, -1, 2] if x > 0]`,
+  ans:`[9, 4]`, why:"先用 if 篩選出 3 和 2，再對它們平方。"},
+ {t:"Slicing & Containers", type:"wwpd", lv:2, title:"dict 與 key 參數",
+  q:"三個運算式分別顯示什麼？",
+  code:`>>> d = {'a': 3, 'b': 1, 'c': 2}
+>>> max(d, key=lambda k: d[k])
+>>> sum([[1], [2, 3]], [])
+>>> len(d)`,
+  hint:"對 dict 迭代得到的是 key。sum 的第二個參數是起始值。",
+  ans:`'a'
+[1, 2, 3]
+3`, why:"max 比較的是每個 key 對應的值，回傳的是 key 'a'。sum 從 [] 開始，依序做 list 相加。"},
+ {t:"Slicing & Containers", type:"code", lv:2, title:"group_by_len",
+  q:"回傳一個 dict，key 是單字長度，value 是該長度的單字 list（保持原順序）。",
+  code:`def group_by_len(words):
+    """
+    >>> group_by_len(['hi', 'cat', 'ok', 'dog', 'a'])
+    {2: ['hi', 'ok'], 3: ['cat', 'dog'], 1: ['a']}
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`def group_by_len(words):
+    result = {}
+    for w in words:
+        if len(w) not in result:
+            result[len(w)] = []
+        result[len(w)].append(w)
+    return result`, why:"key 第一次出現時先建立空 list，之後再 append。"},
+ {t:"Slicing & Containers", type:"code", lv:3, title:"flatten",
+  q:"把任意深度的巢狀 list 攤平成一層。",
+  code:`def flatten(s):
+    """
+    >>> flatten([1, [2, [3, 4]], [], 5])
+    [1, 2, 3, 4, 5]
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"走過每個元素：如果它是 list（type(x) == list），就遞迴攤平它；否則直接加入。",
+  ans:`def flatten(s):
+    result = []
+    for x in s:
+        if type(x) == list:
+            result = result + flatten(x)
+        else:
+            result = result + [x]
+    return result`, why:"迭代處理「同一層」，遞迴處理「更深一層」。這種迭代與遞迴的組合在 tree 題目中也很常見。"},
+ {t:"Objects & Compound Data", type:"concept", lv:2, title:"哪一行違反 abstraction barrier",
+  q:"rational(n, d) 是 constructor，numer(x)、denom(x) 是 selectors。下面哪一行違反了 abstraction barrier？",
+  code:`x = rational(1, 2)
+a = numer(x) * 2        # (A)
+b = x[1]                # (B)
+c = rational(numer(x), denom(x) + 1)   # (C)`,
+  ans:`(B)`, why:"(B) 直接假設 rational 內部是 list 並用 index 取值。若之後把內部改成 dict，(B) 就會壞掉，而 (A)、(C) 不受影響。"},
+ {t:"Linked Lists", type:"wwpd", lv:1, title:"走訪 linked list",
+  q:"兩個運算式分別顯示什麼？",
+  code:`>>> s = Link(1, Link(2, Link(3)))
+>>> s.rest.rest.first
+>>> s.rest.rest.rest is Link.empty`,
+  ans:`3
+True`, why:"s.rest 是 <2 3>，s.rest.rest 是 <3>，它的 first 是 3、rest 是 Link.empty。"},
+ {t:"Linked Lists", type:"code", lv:1, title:"link_len",
+  q:"用遞迴計算 linked list 的長度。",
+  code:`def link_len(s):
+    """
+    >>> link_len(Link(1, Link(2, Link(3))))
+    3
+    >>> link_len(Link.empty)
+    0
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`def link_len(s):
+    if s is Link.empty:
+        return 0
+    return 1 + link_len(s.rest)`, why:"空串列長度是 0；否則是 1 加上 rest 的長度。"},
+ {t:"Linked Lists", type:"code", lv:2, title:"filter_link",
+  q:"回傳一個新的 linked list，只保留使 f 為真的元素，不要修改原本的串列。",
+  code:`def filter_link(f, s):
+    """
+    >>> s = Link(1, Link(2, Link(3, Link(4))))
+    >>> filter_link(lambda x: x % 2 == 1, s)
+    Link(1, Link(3))
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"先遞迴處理 rest 得到結果，再決定要不要把 s.first 放在前面。",
+  ans:`def filter_link(f, s):
+    if s is Link.empty:
+        return Link.empty
+    rest = filter_link(f, s.rest)
+    if f(s.first):
+        return Link(s.first, rest)
+    return rest`, why:"建立新串列的固定寫法：Link(這一層的值, 遞迴處理 rest 的結果)。不需要的元素就直接回傳 rest。"},
+ {t:"Linked Lists", type:"code", lv:3, title:"interleave",
+  q:"交錯合併兩個 linked list：先取 s 的第一個，再取 t 的第一個，依此類推；其中一個用完時，接上另一個剩下的部分。",
+  code:`def interleave(s, t):
+    """
+    >>> interleave(Link(1, Link(3)), Link(2, Link(4, Link(6))))
+    Link(1, Link(2, Link(3, Link(4, Link(6)))))
+    >>> interleave(Link.empty, Link(7))
+    Link(7)
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"取出 s.first 之後，下一個要取的是 t 的第一個。遞迴呼叫時把兩個參數的位置交換。",
+  ans:`def interleave(s, t):
+    if s is Link.empty:
+        return t
+    return Link(s.first, interleave(t, s.rest))`, why:"交換參數讓「輪流取」自動發生；s 用完時直接回傳 t 剩下的部分。考試級題目常常答案很短，關鍵在找到正確的遞迴關係。"},
+ {t:"Trees", type:"wwpd", lv:1, title:"讀懂 tree 結構",
+  q:"三個運算式分別顯示什麼？",
+  code:`>>> t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+>>> label(branches(t)[1])
+>>> len(branches(branches(t)[1]))
+>>> is_leaf(branches(t)[0])`,
+  hint:"先把 t 畫成一棵樹：根是 1，有兩個 branch。",
+  ans:`3
+2
+True`, why:"branches(t)[1] 是以 3 為根的子樹，它有 4 和 5 兩個 branch。branches(t)[0] 是 tree(2)，沒有 branch，所以是 leaf。"},
+ {t:"Trees", type:"code", lv:1, title:"tree_sum",
+  q:"回傳 tree 中所有 label 的總和。",
+  code:`def tree_sum(t):
+    """
+    >>> t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+    >>> tree_sum(t)
+    15
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`def tree_sum(t):
+    return label(t) + sum([tree_sum(b) for b in branches(t)])`, why:"leaf 的 branches 是空 list，sum([]) 是 0，所以不需要另外寫 base case。"},
+ {t:"Trees", type:"code", lv:2, title:"height",
+  q:"回傳 tree 的高度：從根到最遠 leaf 經過的邊數，leaf 的高度是 0。",
+  code:`def height(t):
+    """
+    >>> t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+    >>> height(t)
+    2
+    >>> height(tree(9))
+    0
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"這題需要 base case，因為 max([]) 會出錯。",
+  ans:`def height(t):
+    if is_leaf(t):
+        return 0
+    return 1 + max([height(b) for b in branches(t)])`, why:"每往下一層加 1，取所有 branch 中最高的。"},
+ {t:"Trees", type:"code", lv:2, title:"max_path_sum",
+  q:"從根到任一 leaf 的路徑上，label 總和最大是多少？",
+  code:`def max_path_sum(t):
+    """
+    >>> t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+    >>> max_path_sum(t)    # 1 + 3 + 5
+    9
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`def max_path_sum(t):
+    if is_leaf(t):
+        return label(t)
+    return label(t) + max([max_path_sum(b) for b in branches(t)])`, why:"每一層：自己的 label 加上「最好的那個 branch」的結果。"},
+ {t:"Trees", type:"code", lv:3, title:"find_path",
+  q:"回傳從根到 label 為 x 的節點的路徑（list）；找不到則回傳 None。",
+  code:`def find_path(t, x):
+    """
+    >>> t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+    >>> find_path(t, 5)
+    [1, 3, 5]
+    >>> find_path(t, 1)
+    [1]
+    >>> print(find_path(t, 9))
+    None
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"如果根就是 x，路徑是 [x]。否則對每個 branch 遞迴；只要某個 branch 找到路徑，就在前面加上目前的 label 並回傳。",
+  ans:`def find_path(t, x):
+    if label(t) == x:
+        return [label(t)]
+    for b in branches(t):
+        path = find_path(b, x)
+        if path:
+            return [label(t)] + path
+    return None`, why:"這是「找到就提早回傳」的 tree 遞迴。注意 return None 要放在 for 迴圈外，否則只會檢查第一個 branch。"},
+ // Unit 4
+ {t:"Mutation", type:"wwpd", lv:1, title:"副本與共用",
+  q:"Python 會印出什麼？",
+  code:`a = [1, 2, 3]
+b = a
+c = list(a)
+b.append(4)
+c[0] = 9
+print(a, c)`,
+  ans:`[1, 2, 3, 4] [9, 2, 3]`, why:"b 和 a 是同一個 list，所以 append 會影響 a。c 是 list(a) 建立的新副本，修改 c 不影響 a。"},
+ {t:"Mutation", type:"wwpd", lv:2, title:"list 裡放同一個 list",
+  q:"Python 會印出什麼？",
+  code:`s = [1, 2]
+t = [s, s]
+s.append(3)
+print(t, t[0] is t[1])`,
+  hint:"畫 box-and-pointer 圖：t 的兩個格子指向哪裡？",
+  ans:`[[1, 2, 3], [1, 2, 3]] True`, why:"t 的兩個元素都指向同一個 s，所以 s 改變後兩個都會看到。"},
+ {t:"Mutation", type:"wwpd", lv:1, title:"append 的回傳值",
+  q:"Python 會印出什麼？",
+  code:`x = [1, 2, 3]
+y = x.append(4)
+print(y, x)`,
+  ans:`None [1, 2, 3, 4]`, why:"append 就地修改 list，回傳 None。常見錯誤是寫 x = x.append(4)，結果 x 變成 None。"},
+ {t:"Mutation", type:"code", lv:1, title:"double_in_place",
+  q:"把 list 中每個元素就地乘以 2，函數不需要回傳任何值。",
+  code:`def double_in_place(s):
+    """
+    >>> s = [1, 2, 3]
+    >>> double_in_place(s)
+    >>> s
+    [2, 4, 6]
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"for x in s 只拿到值，改 x 不會改到 s。要用 index。",
+  ans:`def double_in_place(s):
+    for i in range(len(s)):
+        s[i] = s[i] * 2`, why:"透過 s[i] = ... 修改的是 list 本身。若寫 s = [x * 2 for x in s]，只是讓區域名稱 s 指向新 list，呼叫者的 list 不會變。"},
+ {t:"Mutation", type:"code", lv:2, title:"remove_all",
+  q:"就地移除 list 中所有等於 x 的元素。",
+  code:`def remove_all(s, x):
+    """
+    >>> s = [1, 2, 1, 1, 3]
+    >>> remove_all(s, 1)
+    >>> s
+    [2, 3]
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"一邊 for 迴圈走過 list 一邊刪除元素，會跳過某些元素。",
+  ans:`def remove_all(s, x):
+    while x in s:
+        s.remove(x)`, why:"remove 每次只刪第一個符合的元素，所以重複到 x 不在 s 為止。另一種寫法 s[:] = [y for y in s if y != x] 用 slice assignment 也能就地修改。"},
+ {t:"Mutation", type:"code", lv:3, title:"insert_after",
+  q:"在 s 中每個等於 before 的元素後面，就地插入 after。注意 before 與 after 相同的情況。",
+  code:`def insert_after(s, before, after):
+    """
+    >>> s = [1, 2, 1]
+    >>> insert_after(s, 1, 5)
+    >>> s
+    [1, 5, 2, 1, 5]
+    >>> t = [3]
+    >>> insert_after(t, 3, 3)    # 不能無限插入
+    >>> t
+    [3, 3]
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"用 while 迴圈與 index i。插入之後，要跳過剛插入的元素。",
+  ans:`def insert_after(s, before, after):
+    i = 0
+    while i < len(s):
+        if s[i] == before:
+            s.insert(i + 1, after)
+            i += 1
+        i += 1`, why:"插入後多加一次 i，跳過剛插入的元素。若不跳過，before 與 after 相同時會無限迴圈。這是 mutation 題目常見的陷阱。"},
+ {t:"Mutation", type:"code", lv:2, title:"make_counter（nonlocal）",
+  q:"回傳一個計數器函數，每呼叫一次就把計數加 1 並回傳。每個計數器各自獨立。",
+  code:`def make_counter():
+    """
+    >>> c = make_counter()
+    >>> c()
+    1
+    >>> c()
+    2
+    >>> make_counter()()
+    1
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"在內層函數修改外層的名稱，需要宣告 nonlocal。",
+  ans:`def make_counter():
+    count = 0
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter`, why:"沒有 nonlocal 時，count += 1 會被當成內層的區域變數，產生 UnboundLocalError。每次呼叫 make_counter 都建立新的 frame，所以計數器彼此獨立。"},
+ {t:"Attributes", type:"wwpd", lv:3, title:"class attribute 與 instance attribute",
+  q:"依序寫出每個運算式的值。",
+  code:`class Cat:
+    lives = 9
+    def __init__(self, name):
+        self.name = name
+    def lose(self):
+        self.lives -= 1
+        return self.lives
+
+a = Cat('Mo')
+b = Cat('Bo')
+a.lose()        # (1)
+Cat.lives       # (2)
+b.lives         # (3)
+Cat.lives = 5
+a.lives         # (4)
+b.lives         # (5)`,
+  hint:"self.lives -= 1 等於 self.lives = self.lives - 1。右邊讀到的是哪個 lives？左邊寫到哪裡？",
+  ans:`(1) 8
+(2) 9
+(3) 9
+(4) 8
+(5) 5`, why:"a.lose() 讀到 class attribute 9，再把 8 寫成 a 自己的 instance attribute，class attribute 不變。之後修改 Cat.lives = 5，b 沒有自己的 lives，所以看到 5；a 有自己的 lives = 8。"},
+ {t:"Classes", type:"code", lv:1, title:"Stack",
+  q:"完成 Stack class：push 放入元素，pop 取出最後放入的元素，size 回傳元素個數。",
+  code:`class Stack:
+    """
+    >>> s = Stack()
+    >>> s.push(1)
+    >>> s.push(2)
+    >>> s.pop()
+    2
+    >>> s.size()
+    1
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`class Stack:
+    def __init__(self):
+        self.items = []
+    def push(self, x):
+        self.items.append(x)
+    def pop(self):
+        return self.items.pop()
+    def size(self):
+        return len(self.items)`, why:"items 必須在 __init__ 中建立成 instance attribute。若寫成 class attribute items = []，所有 Stack 會共用同一個 list。"},
+ {t:"Inheritance", type:"wwpd", lv:2, title:"self 呼叫的是哪個版本",
+  q:"兩個運算式分別顯示什麼？",
+  code:`class A:
+    def f(self):
+        return 'A.f'
+    def g(self):
+        return self.f()
+
+class B(A):
+    def f(self):
+        return 'B.f'
+
+>>> B().g()
+>>> A().g()`,
+  hint:"g 定義在 A 裡，但 self 是誰？",
+  ans:`'B.f'
+'A.f'`, why:"B().g() 用的是繼承來的 A.g，但 self 是 B 的 instance，self.f() 會先在 B 找到 f。查找永遠從 instance 的實際 class 開始。"},
+ {t:"Lazy Evaluation & Iterators", type:"wwpd", lv:1, title:"iterator 用完就沒了",
+  q:"兩個 list(it) 分別顯示什麼？",
+  code:`>>> it = iter([1, 2, 3])
+>>> next(it)
+1
+>>> list(it)
+>>> list(it)`,
+  ans:`[2, 3]
+[]`, why:"next 已經取走 1。第一次 list(it) 取走剩下的 2、3，第二次 iterator 已經到底，得到空 list。"},
+ {t:"Generators", type:"code", lv:1, title:"squares_up_to",
+  q:"寫一個 generator function，依序 yield 不超過 n 的完全平方數。",
+  code:`def squares_up_to(n):
+    """
+    >>> list(squares_up_to(20))
+    [1, 4, 9, 16]
+    """
+    "*** YOUR CODE HERE ***"`,
+  ans:`def squares_up_to(n):
+    i = 1
+    while i * i <= n:
+        yield i * i
+        i += 1`, why:"每次 yield 後函數暫停，下次 next() 從 i += 1 繼續。"},
+ {t:"Generators", type:"code", lv:2, title:"tree_labels",
+  q:"寫一個 generator function，依序 yield tree 中所有 label（先根，再依序處理每個 branch）。",
+  code:`def tree_labels(t):
+    """
+    >>> t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+    >>> list(tree_labels(t))
+    [1, 2, 3, 4, 5]
+    """
+    "*** YOUR CODE HERE ***"`,
+  hint:"先 yield 自己的 label，再對每個 branch 用 yield from。",
+  ans:`def tree_labels(t):
+    yield label(t)
+    for b in branches(t):
+        yield from tree_labels(b)`, why:"若只寫 tree_labels(b) 而沒有 yield from，只會建立 generator 物件，不會交出任何值。"},
+ {t:"Efficiency", type:"concept", lv:2, title:"order of growth",
+  q:"下面函數的 order of growth 是什麼？",
+  code:`def halve(n):
+    count = 0
+    while n > 1:
+        n = n // 2
+        count += 1
+    return count`,
+  ans:`Θ(log n)`, why:"每一圈 n 減半，n 變成 1 需要大約 log₂ n 圈。"},
+ // Unit 5
+ {t:"Immutable Data", type:"concept", lv:1, title:"Gleam list 語法（預習）",
+  q:"在 Gleam 中，[1, ..[2, 3]] 的值是什麼？它和 Python 的哪個結構相似？",
+  ans:`[1, 2, 3]`, why:"[x, ..rest] 是把 x 放在 rest 前面，形成新的 list，原本的 [2, 3] 不會被修改。這與 Python 的 Link(1, rest) 是同一個概念。"},
+ {t:"Immutable Data", type:"code", lv:2, title:"length（Gleam 預習）",
+  q:"用 case 與遞迴，寫出 Gleam 版本的 list 長度函數。",
+  code:`fn length(xs: List(a)) -> Int {
+  // YOUR CODE HERE
+}`,
+  hint:"對照 Python 的 link_len：空 list 是 0，否則是 1 加上 rest 的長度。",
+  ans:`fn length(xs: List(a)) -> Int {
+  case xs {
+    [] -> 0
+    [_, ..rest] -> 1 + length(rest)
+  }
+}`, why:"_ 表示不需要用到第一個元素。List(a) 的 a 是型別變數，代表任何型別的 list 都可以。"},
+ // Unit 6
+ {t:"Tables, SQL & Aggregation", type:"sql", lv:1, title:"篩選與排序（預習）",
+  q:"表格 dogs 有欄位 name、fur、height。寫出 SQL：找出 height 大於 40 的狗的名字，依 height 由高到低排序。",
+  code:`-- dogs(name, fur, height)`,
+  ans:`SELECT name FROM dogs
+WHERE height > 40
+ORDER BY height DESC;`, why:"WHERE 篩選列，ORDER BY ... DESC 由大到小排序。"},
+ {t:"Tables, SQL & Aggregation", type:"sql", lv:2, title:"分組與彙總（預習）",
+  q:"同一個 dogs 表格，寫出 SQL：列出每種 fur 的狗數量，只保留數量大於 2 的 fur。",
+  code:`-- dogs(name, fur, height)`,
+  hint:"分組用 GROUP BY；篩選「分組後的結果」用 HAVING，不是 WHERE。",
+  ans:`SELECT fur, COUNT(*) AS n
+FROM dogs
+GROUP BY fur
+HAVING n > 2;`, why:"WHERE 在分組前作用於每一列，HAVING 在分組後作用於每一組。"}
+];
+QUESTIONS.forEach((q,i)=>{ q.id = "q"+(i+1); q.u = TOPICS[q.t].unit.id; });
+document.getElementById("qcount").textContent = `(${QUESTIONS.length})`;
+
+/* progress (per-viewer, optional) */
+const PKEY = "cs61a-practice-v1";
+let progress = {};
+try { progress = JSON.parse(localStorage.getItem(PKEY) || "{}") || {}; } catch(e) { progress = {}; }
+function saveProgress(){ try { localStorage.setItem(PKEY, JSON.stringify(progress)); } catch(e) {} }
+
+function practiceLink(o){
+  const n = QUESTIONS.filter(q=>q.t===o.en).length;
+  if(!n) return "";
+  return `<h4>練習題 Practice questions</h4><button type="button" class="goto" data-topic="${esc(o.en)}">做這個主題的 ${n} 題練習</button>`;
+}
+
+const fUnit = document.getElementById("f-unit"), fExam = document.getElementById("f-exam"), fType = document.getElementById("f-type"), fHide = document.getElementById("f-hide");
+fUnit.innerHTML = `<option value="">全部單元</option>` + UNITS.filter(u=>u.id!=='u7').map((u,i)=>`<option value="${u.id}">Unit ${i+1} ${esc(u.zh)}</option>`).join("");
+fExam.innerHTML = EXAM_FILTERS.map(f=>`<option value="${f.v}">${esc(f.label)}</option>`).join("");
+let topicFilter = "";
+
+function renderPractice(){
+  const u = fUnit.value, ex = fExam.value, ty = fType.value, hide = fHide.checked;
+  const list = QUESTIONS.filter(q => (!u || q.u===u) && inExam(q, ex) && (!ty || q.type===ty) && (!topicFilter || q.t===topicFilter));
+  const shown = list.filter(q => !(hide && progress[q.id]==='ok'));
+  const okCount = list.filter(q=>progress[q.id]==='ok').length;
+  document.getElementById("pstat").innerHTML = `${topicFilter?`主題：<b>${esc(TOPICS[topicFilter].zh)}</b> <button type="button" class="goto" id="clearTopic">清除主題篩選</button> · `:''}符合條件 ${list.length} 題 · 已答對 ${okCount} 題${hide&&okCount?`（已隱藏）`:''}。答題紀錄只存在這個瀏覽器。`;
+  const box = document.getElementById("qlist");
+  if(!shown.length){ box.innerHTML = `<div class="empty">沒有符合條件的題目。試著放寬篩選條件。</div>`; }
+  else box.innerHTML = shown.map(q=>{
+    const t = TOPICS[q.t]; const st = progress[q.id]||"";
+    const quizTag = t.quiz ? `<span class="qb">${t.quiz}</span>` : "";
+    return `<article class="q ${st}" data-id="${q.id}">
+      <div class="qhead"><span class="qtype">${TYPE[q.type]}</span><span class="lvl l${q.lv}">${LV[q.lv]}</span><span>${esc(t.zh)}</span>${quizTag}<span class="qnum">#${q.id.slice(1)}</span></div>
+      <h4>${esc(q.title)}</h4>
+      ${q.q?`<p>${esc(q.q)}</p>`:''}
+      ${q.code?`<pre><code>${esc(q.code)}</code></pre>`:''}
+      ${q.hint?`<details><summary>提示 Hint</summary><p>${esc(q.hint)}</p></details>`:''}
+      <details><summary>答案與解析 Answer</summary><pre><code>${esc(q.ans)}</code></pre><p>${esc(q.why)}</p></details>
+      <div class="qact">
+        <button type="button" data-mark="ok" aria-pressed="${st==='ok'}">我答對了</button>
+        <button type="button" data-mark="again" aria-pressed="${st==='again'}">還要再練</button>
+        <button type="button" class="goto" data-learn="${esc(q.t)}">看主題說明</button>
+      </div>
+    </article>`;
+  }).join("");
+}
+[fUnit,fExam,fType,fHide].forEach(el=>el.addEventListener("change", renderPractice));
+
+document.getElementById("view-practice").addEventListener("click", e=>{
+  const m = e.target.closest("[data-mark]");
+  if(m){
+    const id = m.closest(".q").dataset.id, v = m.dataset.mark;
+    if(progress[id]===v) delete progress[id]; else progress[id]=v;
+    saveProgress(); renderPractice(); return;
+  }
+  const l = e.target.closest("[data-learn]");
+  if(l){ openTopic(l.dataset.learn); return; }
+  if(e.target.id==="clearTopic"){ topicFilter=""; renderPractice(); }
+});
+
+/* ---------- tabs & cross-links ---------- */
+const VIEWS = ["map","exams","practice"];
+function show(v){
+  if(!VIEWS.includes(v)) v = "map";
+  VIEWS.forEach(x=>{
+    document.getElementById("view-"+x).hidden = x!==v;
+    document.getElementById("tab-"+x).setAttribute("aria-selected", String(x===v));
+  });
+  if(v==="practice") renderPractice();
+}
+VIEWS.forEach(v=>document.getElementById("tab-"+v).addEventListener("click", ()=>{
+  show(v);
+  try { history.replaceState(null, "", "#"+v); } catch(e) {}
+}));
+function openTopic(en){
+  show("map");
+  for(const [k,o] of reg){ if(o.kind==='topic' && o.en===en){
+    const btn = tree.querySelector(`[data-k="${k}"]`);
+    const br = btn.closest("[data-unit]");
+    if(br && br.classList.contains("collapsed")) br.querySelector(".unit").click();
+    btn.click();
+    btn.scrollIntoView({block:"center", inline:"center", behavior:"auto"});
+    break;
+  }}
+}
+function openPractice(opts){
+  fUnit.value = ""; fType.value = ""; fExam.value = opts.exam || ""; topicFilter = opts.topic || "";
+  show("practice");
+  document.getElementById("tab-practice").scrollIntoView({block:"start"});
+}
+document.getElementById("detail").addEventListener("click", e=>{
+  const b = e.target.closest("[data-topic]"); if(b) openPractice({topic:b.dataset.topic});
+});
+document.getElementById("view-exams").addEventListener("click", e=>{
+  const b = e.target.closest("[data-exam]"); if(b) openPractice({exam:b.dataset.exam});
+});
+
+/* ---------- resizable + fullscreen detail panel ---------- */
+const mainEl = document.querySelector("#view-map .main");
+const box = document.getElementById("detailbox");
+const rz = document.getElementById("resizer");
+const fsBtn = document.getElementById("fsBtn");
+const WKEY = "cs61a-panel-w", DEFAULT_W = 380, MIN_W = 320;
+const maxW = () => Math.max(MIN_W, mainEl.getBoundingClientRect().width - 280);
+function setW(w, save){
+  w = Math.round(Math.min(maxW(), Math.max(MIN_W, w)));
+  mainEl.style.setProperty("--pw", w + "px");
+  rz.setAttribute("aria-valuenow", String(w));
+  if(save){ try { localStorage.setItem(WKEY, String(w)); } catch(e) {} }
+}
+try { const sw = Number(localStorage.getItem(WKEY)); if(sw) setW(sw, false); } catch(e) {}
+rz.addEventListener("pointerdown", e=>{
+  e.preventDefault();
+  rz.setPointerCapture(e.pointerId);
+  rz.classList.add("dragging"); document.body.classList.add("resizing");
+  const right = mainEl.getBoundingClientRect().right;
+  const move = ev => setW(right - ev.clientX - 8, false);
+  const up = ev => {
+    rz.removeEventListener("pointermove", move); rz.removeEventListener("pointerup", up); rz.removeEventListener("pointercancel", up);
+    rz.classList.remove("dragging"); document.body.classList.remove("resizing");
+    setW(parseFloat(getComputedStyle(mainEl).getPropertyValue("--pw")) || DEFAULT_W, true);
+  };
+  rz.addEventListener("pointermove", move); rz.addEventListener("pointerup", up); rz.addEventListener("pointercancel", up);
+});
+rz.addEventListener("dblclick", ()=>setW(DEFAULT_W, true));
+rz.addEventListener("keydown", e=>{
+  const cur = parseFloat(getComputedStyle(mainEl).getPropertyValue("--pw")) || DEFAULT_W;
+  if(e.key==="ArrowLeft"){ setW(cur + 40, true); e.preventDefault(); }
+  if(e.key==="ArrowRight"){ setW(cur - 40, true); e.preventDefault(); }
+});
+window.addEventListener("resize", ()=>{ const cur = parseFloat(getComputedStyle(mainEl).getPropertyValue("--pw")); if(cur) setW(cur, false); });
+
+function isStacked(){ try { return window.matchMedia("(max-width:1180px)").matches; } catch(e) { return false; } }
+let sheetPushed = false;
+function setFs(on, fromPop){
+  const was = box.classList.contains("fs");
+  box.classList.toggle("fs", on);
+  document.body.classList.toggle("fs-open", on);
+  fsBtn.setAttribute("aria-pressed", String(on));
+  fsBtn.textContent = on ? (isStacked() ? "← 返回" : "結束全螢幕 Esc") : "全螢幕";
+  box.scrollTop = 0;
+  if(on) fsBtn.focus({preventScroll:true});
+  // let the phone's back gesture close the sheet
+  if(on && !was && isStacked()){ try { history.pushState({sheet:1}, ""); sheetPushed = true; } catch(e) { sheetPushed = false; } }
+  if(!on && was && sheetPushed && !fromPop){ sheetPushed = false; try { history.back(); } catch(e) {} }
+  if(!on && fromPop) sheetPushed = false;
+}
+window.addEventListener("popstate", ()=>{ if(box.classList.contains("fs")) setFs(false, true); });
+fsBtn.addEventListener("click", ()=>setFs(!box.classList.contains("fs")));
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && box.classList.contains("fs")) setFs(false); });
+// phones: start with the compact outline; sub-points are in each topic's sheet
+if(window.matchMedia && window.matchMedia("(max-width:760px)").matches){ cb.click(); }
+box.addEventListener("click", e=>{ if(e.target.closest("[data-topic]") && box.classList.contains("fs")) setFs(false); }, true);
+
+renderExams();
+show((location.hash||"").slice(1));
+</script>
+</body>
+</html>

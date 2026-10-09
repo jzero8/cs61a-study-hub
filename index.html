@@ -98,6 +98,17 @@ body.resizing{cursor:col-resize;user-select:none}
 .detail.fs pre{font-size:14px}
 .detail.fs p,.detail.fs li{font-size:16px}
 body.fs-open{overflow:hidden}
+/* phones/tablets: the detail "sheet" is a normal page that scrolls with the document */
+body.sheet .wrap > header,
+body.sheet .exams,
+body.sheet .tabs,
+body.sheet .viewtools,
+body.sheet .mapbox,
+body.sheet footer{display:none}
+body.sheet .main{display:block}
+body.sheet .detail.fs{position:static;inset:auto;max-height:none;overflow:visible;border:0;border-radius:0;padding:0;background:var(--bg)}
+body.sheet .detail.fs .dbar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);margin:0 0 12px;padding-block:10px 8px}
+body.sheet .detail.fs pre{white-space:pre;overflow-x:auto}
 .mapbox{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto;padding-block:18px;padding-inline:18px;min-width:0}
 
 /* tree — horizontal */
@@ -1987,15 +1998,20 @@ rz.addEventListener("keydown", e=>{
 window.addEventListener("resize", ()=>{ const cur = parseFloat(getComputedStyle(mainEl).getPropertyValue("--pw")); if(cur) setW(cur, false); });
 
 function isStacked(){ try { return window.matchMedia("(max-width:1180px)").matches; } catch(e) { return false; } }
-let sheetPushed = false;
+let sheetPushed = false, savedY = 0;
 function setFs(on, fromPop){
   const was = box.classList.contains("fs");
+  const stacked = isStacked();
+  if(on && !was) savedY = window.scrollY || 0;
   box.classList.toggle("fs", on);
-  document.body.classList.toggle("fs-open", on);
+  // desktop: fixed overlay that scrolls itself; phone/tablet: normal page that scrolls the document
+  document.body.classList.toggle("fs-open", on && !stacked);
+  document.body.classList.toggle("sheet", on && stacked);
   fsBtn.setAttribute("aria-pressed", String(on));
-  fsBtn.textContent = on ? (isStacked() ? "← 返回" : "結束全螢幕 Esc") : "全螢幕";
+  fsBtn.textContent = on ? (stacked ? "← 返回" : "結束全螢幕 Esc") : "全螢幕";
   box.scrollTop = 0;
-  if(on) fsBtn.focus({preventScroll:true});
+  if(on){ fsBtn.focus({preventScroll:true}); if(stacked) window.scrollTo(0, 0); }
+  if(!on && was && stacked){ const y = savedY; requestAnimationFrame(()=>window.scrollTo(0, y)); }
   // let the phone's back gesture close the sheet
   if(on && !was && isStacked()){ try { history.pushState({sheet:1}, ""); sheetPushed = true; } catch(e) { sheetPushed = false; } }
   if(!on && was && sheetPushed && !fromPop){ sheetPushed = false; try { history.back(); } catch(e) {} }

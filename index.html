@@ -164,10 +164,18 @@ pre{background:var(--code-bg);border-radius:6px;padding:10px 12px;overflow-x:aut
 pre + pre{margin-top:8px}
 .tip{border-left:3px solid var(--gold);padding:4px 0 4px 10px;font-size:13.5px;margin:0}
 .status{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;margin-bottom:6px}
-details.check{border:1px solid var(--line);border-radius:6px;padding:8px 10px}
-details.check summary{cursor:pointer;font-weight:500}
-details.check .q{margin:6px 0}
-details.check .a{border-top:1px dashed var(--line);padding-top:6px;margin-top:6px}
+.check{border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.check .q{margin:0 0 8px}
+.check details{border-top:1px dashed var(--line);padding-top:8px}
+.check summary{cursor:pointer;font-weight:500;color:var(--blue)}
+.check .a{margin:8px 0 0}
+.detail .summary{font-weight:500}
+.deep{margin:0 0 14px}
+.deep h5{font-size:14.5px;margin:12px 0 6px;color:var(--blue);font-weight:700}
+.deep p{margin:0 0 8px}
+.deep ol{margin:0 0 8px;padding-left:20px}
+.deep li{margin:3px 0}
+.deep pre{margin:6px 0 8px}
 
 /* tabs */
 .tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:2px solid var(--line);margin-bottom:18px}
@@ -284,7 +292,7 @@ footer a{color:var(--blue)}
     <div>
       <div class="eyebrow">UC Berkeley · Fall 2026 · John DeNero</div>
       <h1>CS 61A 課程地圖 Course Map</h1>
-      <p class="lede">三個部分：「課程內容」是六個單元加四個專案的心智圖；「考試」整理評分結構、每次 quiz 與 midterm 的範圍和準備方法；「練習題」依單元與考試分類，每題附提示、答案與解析。狀態以 2026-10-10 為準。</p>
+      <p class="lede">三個部分：「課程內容」是六個單元加四個專案的課程地圖；「考試」整理評分結構、每次 quiz 與 midterm 的範圍和準備方法；「練習題」依單元與考試分類，每題附提示、答案與解析。狀態以 2026-10-10 為準。</p>
     </div>
   </header>
 
@@ -960,6 +968,541 @@ WHERE a.child = b.child AND a.name < b.name;`,
   ]}
 ];
 
+/* ---------- in-depth explanations per topic ---------- */
+const DEEP = {
+"Expressions & Evaluation": [
+ {h:"先用一句話理解", p:"運算式（expression）就是「會算出一個值的程式片段」。Python 讀到運算式時，只做一件事：求值（evaluate）。例如 2 + 3 求值得到 5，max(1, 9) 求值得到 9。整門課的第一個基本功，就是能準確說出任何一個運算式會算出什麼。"},
+ {h:"三種基本運算式", ol:[
+   "Primitive expression：數字 42、字串 'hi'，以及名稱 x。名稱的值，就是它目前綁定（bind）的值。",
+   "Call expression：f(a, b)，呼叫一個函數。",
+   "運算子運算式：2 + 3 其實等同 add(2, 3)，只是寫法比較方便。"]},
+ {h:"Call expression 的求值三步", ol:[
+   "求 operator：算出括號前面那部分，得到要呼叫的函數。",
+   "由左到右求每個 operand：算出每個參數的值。",
+   "套用（apply）：把函數套用到這些參數值上，得到結果。"],
+  p:"關鍵是：這三步是「遞迴」的。如果某個 operand 本身也是 call expression，就對它再做一次三步，算完才回到外層。"},
+ {h:"逐步追蹤一個例子", code:`mul(add(2, 3), add(4, 1))
+
+① operator：mul → 乘法函數
+② 第一個 operand：add(2, 3)
+     operator add → 加法函數
+     operands 2、3 → 套用 → 5
+③ 第二個 operand：add(4, 1) → 5
+④ 套用 mul(5, 5) → 25`},
+ {h:"考試怎麼考", p:"WWPD（What Would Python Display）題目會把很多呼叫巢狀在一起，看起來很亂。最穩的方法是畫 expression tree：每個呼叫畫成一個節點，它的 operands 畫成子節點，從最底下的葉子開始往上算，每個節點旁邊寫上它的值。"}
+],
+"Names & Assignment": [
+ {h:"先用一句話理解", p:"名稱像一張貼紙，貼在某個值上。x = 5 不是數學上的「x 等於 5」，而是「把貼紙 x 貼到 5 這個值上」。之後再寫 x = 7，只是把貼紙撕下來，改貼到 7。"},
+ {h:"賦值的規則", ol:[
+   "先把等號右邊完整求值，得到一個值。",
+   "再把左邊的名稱綁定到這個值。如果目前的 frame 已經有這個名稱，就覆蓋掉舊的綁定。",
+   "多重賦值 a, b = e1, e2：先把 e1、e2 全部求完，最後才一起綁定。"]},
+ {h:"為什麼多重賦值很重要", code:`a, b = 0, 1
+a, b = b, a + b   # 右邊用舊值 (1, 0+1) → a=1, b=1
+a, b = b, a + b   # (1, 1+1) → a=1, b=2
+a, b = b, a + b   # (2, 1+2) → a=2, b=3`,
+  p:"這是計算 Fibonacci 數列的常見寫法。如果拆成兩行 a = b 再 b = a + b，第二行用到的 a 已經被改掉，結果就錯了。"},
+ {h:"def 也是一種賦值", p:"def square(x): ... 做了兩件事：建立一個函數物件，再把名稱 square 綁定到它。所以函數名稱和一般變數一樣可以被重新綁定。寫了 max = 5 之後，max 就不再是內建函數，呼叫 max(1, 2) 會出現 TypeError。"}
+],
+"Print vs Return, None": [
+ {h:"先用一句話理解", p:"return 像「把答案交到問你的人手上」；print 像「把答案大聲唸出來」。唸出來大家都聽到了，但問你的人手上什麼也沒拿到。"},
+ {h:"兩者的差別", ol:[
+   "return：把值交回呼叫的地方，並且立刻結束函數，後面的程式碼不會執行。",
+   "print：把值顯示在螢幕上，函數繼續往下執行。print 自己的回傳值是 None。",
+   "函數執行到最後都沒有遇到 return，會自動回傳 None。"]},
+ {h:"互動式直譯器的特殊規則", p:"在 >>> 提示符下，Python 會自動顯示運算式的值，但如果值是 None，就什麼都不顯示。所以 >>> print(1) 看到的 1 是 print 印出來的，不是回傳值；而 >>> x = None 之後輸入 >>> x，螢幕上是空的。"},
+ {h:"逐步追蹤一個例子", code:`print(print(1), print(2))
+
+① operator：print 函數
+② 第一個 operand print(1)
+     → 螢幕顯示 1，回傳 None
+③ 第二個 operand print(2)
+     → 螢幕顯示 2，回傳 None
+④ 套用外層 print(None, None)
+     → 螢幕顯示 None None`},
+ {h:"作業最常見的錯誤", p:"題目要求回傳值時用了 print。在互動式下執行 f(3) 看起來也有顯示 9，但呼叫者真正拿到的是 None，doctest 會失敗，f(3) + 1 也會出現 TypeError。"}
+],
+"Control: if / while / Booleans": [
+ {h:"if 陳述式如何執行", ol:[
+   "由上到下依序檢查每個條件（if、elif）。",
+   "遇到第一個為真的條件，就執行那一段，其他段落全部跳過。",
+   "所有條件都不成立時，才執行 else。"],
+  p:"所以 if / elif / else 是「多選一」。如果寫成好幾個獨立的 if，每一個都會被檢查，可能執行不只一段。"},
+ {h:"Truthy 與 Falsy", p:"Python 中任何值都可以當條件。被當成「假」的值（falsy）只有：False、0、0.0、空字串 ''、空 list []、空 dict {}、None。其他所有值都是 truthy。"},
+ {h:"and / or 的短路求值", ol:[
+   "A and B：A 是 falsy 就直接回傳 A，不會去看 B；否則回傳 B。",
+   "A or B：A 是 truthy 就直接回傳 A，不會去看 B；否則回傳 B。",
+   "口訣：and 找第一個假的，or 找第一個真的；都找不到就回傳最後一個。"],
+  p:"因為短路，False and 1/0 不會出錯：右邊根本沒有被求值。"},
+ {h:"逐步追蹤 while 迴圈", code:`def count_digits(n):
+    count = 0
+    while n > 0:
+        n = n // 10
+        count += 1
+    return count
+
+count_digits(2026)
+n=2026 → n=202,  count=1
+n=202  → n=20,   count=2
+n=20   → n=2,    count=3
+n=2    → n=0,    count=4
+n=0    條件不成立，回傳 4`},
+ {h:"寫 while 迴圈前先問三個問題", ol:[
+   "開始之前，每個變數應該設成什麼？",
+   "什麼條件下要停止？",
+   "每一圈要怎麼更新變數，才能保證最後一定會停？"]}
+],
+"Higher-Order Functions": [
+ {h:"先用一句話理解", p:"一般函數處理數字；高階函數（higher-order function）處理「函數」。它像一台通用的機器，換上不同的刀頭（傳入不同的函數），就能做不同的工作。"},
+ {h:"為什麼需要高階函數", p:"假設要寫 sum_squares(n) 計算 1² + 2² + … + n²，以及 sum_cubes(n) 計算 1³ + … + n³。兩個函數的迴圈結構一模一樣，唯一的差別是每一項怎麼算（k * k 或 k * k * k）。\n\n把這個差別抽出來，變成參數 term 傳進去，就得到通用的 summation(n, term)。以後要算任何級數，只要換一個 term 函數即可，不用重寫迴圈。"},
+ {h:"函數作為回傳值與 closure", p:"make_adder(3) 回傳的不是數字，而是「一個會加 3 的函數」。內層的 adder 記得外層的 n = 3，這種「帶著外層名稱一起走的函數」叫做 closure。"},
+ {h:"讀懂 f(x)(y)", ol:[
+   "先算 f(x)，得到一個函數。",
+   "再用 y 去呼叫這個函數。"],
+  code:`make_adder(3)(4)
+① make_adder(3) → 回傳 adder（記得 n=3）
+② adder(4) → 3 + 4 → 7`},
+ {h:"lambda 運算式", p:"lambda x: x * x 等同於 def square(x): return x * x，只是沒有名字，而且本體只能是一個運算式，不能寫 return、賦值或 if 陳述式（可以用 a if cond else b 這種條件運算式）。"},
+ {h:"解題技巧", p:"先用一句話寫出每一層的輸入與輸出。例如 compose(f, g)：「接收兩個函數，回傳一個函數；那個函數接收 x，回傳 f(g(x))」。寫得出這句話，程式碼通常就自然出來了。"}
+],
+"Environments & Environment Diagrams": [
+ {h:"先用一句話理解", p:"Environment 就是「找名稱時要依序查的一串 frame」。像查字典：先查自己手上的小字典（local frame），查不到就查上一層，最後查 Global frame；全部都找不到，就是 NameError。"},
+ {h:"畫環境圖的規則", ol:[
+   "賦值或 def：在目前的 frame 寫下名稱，畫箭頭指向值。def 會建立一個函數物件，並標記 [parent=目前的 frame]。",
+   "呼叫使用者定義的函數：建立新的 frame（f1、f2…），寫上函數名稱，以及 parent。parent 直接抄函數物件上標記的那一個。",
+   "在新 frame 中綁定參數。",
+   "執行函數本體。",
+   "回傳時，在這個 frame 寫下 Return value。"]},
+ {h:"最關鍵的一條規則", p:"函數的 parent 由「它被定義的位置」決定，跟「在哪裡被呼叫」完全無關。這就是 closure 能記住外層名稱的原因。"},
+ {h:"逐步追蹤 make_adder", code:`def make_adder(n):
+    def adder(k):
+        return n + k
+    return adder
+
+add3 = make_adder(3)
+add3(4)
+
+Global
+  make_adder → func make_adder [p=Global]
+f1: make_adder [p=Global]
+  n = 3
+  adder → func adder [p=f1]
+  Return value → adder
+Global
+  add3 → 同一個 adder 函數
+f2: adder [p=f1]
+  k = 4
+  找 n：f2 沒有 → 去 f1 找到 n = 3
+  Return value → 7`},
+ {h:"考試常見扣分點", ol:[
+   "parent 寫成呼叫者的 frame。",
+   "忘記寫 Return value。",
+   "lambda 呼叫時沒有建立新 frame（lambda 呼叫也要建立 frame，名稱寫 λ）。"]}
+],
+"Functional Abstraction & Design": [
+ {h:"先用一句話理解", p:"使用函數的人只需要知道「給它什麼、它還你什麼」，不需要知道裡面怎麼做，就像用微波爐不需要懂電磁波。這種把細節藏起來的做法就是抽象（abstraction）。"},
+ {h:"描述一個函數的三件事", ol:[
+   "Domain：可以接受哪些輸入。",
+   "Range：可能回傳哪些輸出。",
+   "Behavior：輸入和輸出之間的關係。"]},
+ {h:"好函數的原則", ol:[
+   "一個函數只做一件事。",
+   "名稱要說清楚做什麼：回傳值的函數用名詞（square），產生動作的用動詞（print_board）。",
+   "不要重複自己（DRY）：重複出現的邏輯抽成函數。",
+   "用 docstring 說明用途，用 doctest 寫範例。"]},
+ {h:"doctest 如何運作", code:`def square(x):
+    """Return x squared.
+
+    >>> square(3)
+    9
+    """
+    return x * x
+
+# 終端機執行：
+python3 -m doctest file.py -v`,
+  p:"doctest 會找出 docstring 中所有 >>> 開頭的行，實際執行，再比對輸出是否和下一行一模一樣。所以它同時是說明文件，也是測試。"},
+ {h:"Decorator", p:"在 def 上一行寫 @trace，等同於定義完函數之後執行 square = trace(square)。也就是把函數交給一個高階函數，換成加了額外功能的新函數。"}
+],
+"Function Examples & MT1 Review": [
+ {h:"三種題型怎麼下手", ol:[
+   "WWPD：畫 expression tree，留意 print 與 None、and / or 的短路。",
+   "環境圖：照規則一條一條畫，每畫一個 frame 就先寫 parent。",
+   "填空題：先看最後 return 要回傳什麼，再用一個小例子倒推每個空格。"]},
+ {h:"填空題的思考方式", p:"61A 的程式題大多給你程式框架，只留幾個空格。不要想著寫出自己的版本，而是問：這個框架的設計者想要每一行做什麼？空格裡通常只需要一個運算式。"}
+],
+"Recursive Functions": [
+ {h:"先用一句話理解", p:"遞迴（recursion）就是「把大問題交給一個比較小的自己」。像排隊時你想知道自己排第幾，就問前面的人「你排第幾？」；每個人都問前面一個，直到最前面的人知道自己是第 1 個（base case），答案再一路傳回來。"},
+ {h:"遞迴函數的三個要素", ol:[
+   "Base case：最小、可以直接回答的情況，不需要再遞迴。",
+   "Recursive case：把問題縮小，呼叫自己。",
+   "組合：用遞迴得到的結果，算出這一層的答案。"]},
+ {h:"Leap of faith：相信遞迴", p:"寫 sum_digits(n) 時，不要去追蹤 sum_digits(n // 10) 裡面怎麼跑，而是直接相信它會回傳「除了最後一位以外，所有位數的和」。你這一層只需要再加上最後一位 n % 10。\n\n只要 base case 正確、每次呼叫都讓問題變小，這個信任就一定成立，原理和數學歸納法相同。"},
+ {h:"逐步追蹤 fact(3)", code:`fact(3) = 3 * fact(2)
+          fact(2) = 2 * fact(1)
+                    fact(1) = 1 * fact(0)
+                              fact(0) = 1  ← base case
+                    fact(1) = 1 * 1 = 1
+          fact(2) = 2 * 1 = 2
+fact(3) = 3 * 2 = 6`},
+ {h:"如何找到 base case", p:"手動寫出輸入最小時的答案：n = 0、n = 1、一位數、空字串、空串列。這些通常就是 base case。再問自己：遞迴呼叫的參數，最後一定會走到這些情況嗎？"}
+],
+"Order of Recursive Calls": [
+ {h:"先用一句話理解", p:"每次遞迴呼叫都會讓目前這一層「暫停」，等裡面那一層全部執行完，才回來繼續。所以遞迴呼叫之前的程式碼由外到內執行，呼叫之後的程式碼由內到外執行。"},
+ {h:"逐步追蹤 cascade(123)", code:`cascade(123)：印 123，呼叫 cascade(12)，暫停
+  cascade(12)：印 12，呼叫 cascade(1)，暫停
+    cascade(1)：base case，印 1，結束
+  回到 cascade(12)：印 12，結束
+回到 cascade(123)：印 123，結束
+
+輸出：123、12、1、12、123`},
+ {h:"解題方法", p:"用縮排畫出呼叫的層次，每一層寫下「呼叫前做什麼」和「呼叫後做什麼」。往下走時讀前半，往回走時讀後半，順序就不會錯。"}
+],
+"Mutual Recursion": [
+ {h:"先用一句話理解", p:"兩個函數互相呼叫，一起完成一件事。每個函數負責一種「狀態」，輪流交棒。"},
+ {h:"Luhn algorithm", p:"信用卡號用 Luhn 演算法檢查是否打錯：從最右邊開始，第 1、3、5… 位直接相加；第 2、4、6… 位先乘以 2，若結果是兩位數就把兩位相加，再加總。\n\n課程用兩個函數實作：luhn_sum 處理「這一位直接加」，luhn_sum_double 處理「這一位要乘 2」，兩者互相呼叫，自然地交替處理每一位。"},
+ {h:"注意事項", p:"每個函數都要有 base case，而且互相呼叫時問題仍要持續變小。互相遞迴也可以改寫成單一函數，多加一個參數記錄目前是哪種狀態。"}
+],
+"Tree Recursion": [
+ {h:"先用一句話理解", p:"有些問題在每一步都有好幾種選擇，而且每種選擇都要試。例如爬樓梯每次可以走 1 階或 2 階：每個選擇都產生一個子問題，呼叫就像樹枝一樣分岔，所以叫 tree recursion。"},
+ {h:"「用 / 不用」模板", p:"count_partitions(n, m)：用不超過 m 的正整數加總成 n，有幾種方法？\n\n只看最大的數字 m，所有方法可以分成兩類，而且不重疊：\n\n第一類：至少用一次 m。用掉一個 m 之後，剩下 n - m 還要用不超過 m 的數湊，就是 count_partitions(n - m, m)。\n\n第二類：完全不用 m。那就只能用不超過 m - 1 的數湊 n，就是 count_partitions(n, m - 1)。\n\n兩類加起來就是答案。"},
+ {h:"三個 base case", ol:[
+   "n == 0：剛好湊完，算 1 種方法。",
+   "n < 0：湊過頭了，0 種。",
+   "m == 0：沒有數字可以用了，0 種。"],
+  p:"順序很重要：一定要先檢查 n == 0。"},
+ {h:"逐步追蹤 count_partitions(3, 2)", code:`cp(3,2)
+├─ 用 2 → cp(1,2)
+│  ├─ 用 2 → cp(-1,2) = 0
+│  └─ 不用 2 → cp(1,1)
+│     ├─ 用 1 → cp(0,1) = 1   ← 2+1
+│     └─ 不用 1 → cp(1,0) = 0
+└─ 不用 2 → cp(3,1)
+   ├─ 用 1 → cp(2,1) → … = 1 ← 1+1+1
+   └─ 不用 1 → cp(3,0) = 0
+
+答案：2`},
+ {h:"與 Quiz 3 Count Coins 的關係", p:"Count Coins 是同一個模板：m 換成「目前考慮的硬幣面額」。第一類「用這種硬幣」，第二類「不再用這種硬幣，換下一種面額」。因為面額不是連續整數，「下一種面額」通常要用一個 helper 函數取得。"}
+],
+"Sequences & Lists": [
+ {h:"先用一句話理解", p:"List 像一排有編號的置物櫃，編號從 0 開始。可以按編號取東西，也可以從頭到尾逐個看。"},
+ {h:"Indexing", ol:[
+   "s[0] 是第一個元素，s[1] 是第二個。",
+   "s[-1] 是最後一個，s[-2] 是倒數第二個。",
+   "len(s) 是元素個數，所以最大的正數 index 是 len(s) - 1；超出範圍會出現 IndexError。"]},
+ {h:"for 陳述式", p:"for x in s：依序把 s 的每個元素綁定到 x，再執行迴圈本體。如果每個元素本身是 [a, b] 這種成對的資料，可以寫 for a, b in pairs 直接拆開（sequence unpacking）。"},
+ {h:"range", p:"range(a, b) 產生 a、a+1、…、b-1，包含 a，不包含 b。range(n) 等同 range(0, n)。需要 index 時常寫 for i in range(len(s))。"},
+ {h:"List comprehension 拆解", code:`[x * 2 for x in s if x > 1]
+
+等同於：
+result = []
+for x in s:
+    if x > 1:
+        result.append(x * 2)`,
+  p:"讀法：「對 s 中的每個 x，如果 x > 1，就把 x * 2 放進新的 list」。"}
+],
+"Slicing & Containers": [
+ {h:"Slicing", ol:[
+   "s[start:end] 取出 index 從 start 到 end - 1 的部分。",
+   "省略 start 表示從頭開始，省略 end 表示到最後。",
+   "s[::2] 每隔一個取一次，s[::-1] 整個反轉。",
+   "slicing 一定會建立新的 list，修改它不會影響原本的 list。"]},
+ {h:"in 運算子", p:"x in s 檢查 x 是否在 s 中。對字串則是檢查子字串：'ab' in 'cabd' 是 True。對 dict 檢查的是 key，不是 value。"},
+ {h:"sum、max、min 與 key 參數", p:"max(s, key=f) 會用 f(x) 的結果來比較大小，但回傳的是原本的元素。例如 max(['ab', 'c', 'def'], key=len) 依長度比較，回傳 'def'。"},
+ {h:"Dictionary", ol:[
+   "d[k] 取得 key k 對應的 value；k 不存在會出現 KeyError。",
+   "d.get(k, 預設值) 在 k 不存在時回傳預設值。",
+   "for k in d 走訪所有 key；for k, v in d.items() 同時拿到 key 和 value。",
+   "key 必須是不可變的值（數字、字串、tuple），list 不能當 key。"]},
+ {h:"字串也是序列", p:"字串可以 index、slicing、用 for 走訪，但不能修改其中的字元。s.upper() 這類方法都是回傳新字串。"}
+],
+"Objects & Compound Data": [
+ {h:"先用一句話理解", p:"有理數 1/2 需要兩個整數（分子、分母）才能表示。把它們包成一個「值」，才能方便地傳給函數、存起來、拿來運算。"},
+ {h:"Abstraction barrier 的層次", ol:[
+   "最上層：使用有理數的程式，例如 add_rational、print_rational。只使用 constructor 和 selector。",
+   "中間層：constructor 與 selector，即 rational、numer、denom。只有它們知道內部用 list 表示。",
+   "最下層：Python 的 list 本身。"],
+  p:"每一層只能使用相鄰下一層提供的功能。上層程式直接寫 x[0]，就是越過了界線。"},
+ {h:"為什麼要守住界線", p:"如果有一天決定把有理數改用 dict 儲存，只需要改 rational、numer、denom 三個函數，所有上層程式完全不用動。考試常出的題型是：「下面哪一行違反了 abstraction barrier？」"},
+ {h:"物件", p:"在 Python 中，所有的值都是物件，擁有屬性和方法，用 dot expression 存取，例如 'hi'.upper()。到了 Classes 單元，就會學到如何自己定義物件。"}
+],
+"Linked Lists": [
+ {h:"先用一句話理解", p:"Linked list 像一串火車車廂：每節車廂裝一個值（first），並連著後面那一整串車廂（rest）。最後一節後面接的是空的（Link.empty）。"},
+ {h:"和 Python list 的差別", p:"Python list 可以用 index 直接跳到任何位置；linked list 只能從第一節開始，一節一節往後走。但它的定義本身就是遞迴的（rest 也是 linked list），所以特別適合用遞迴處理。"},
+ {h:"Box-and-pointer 圖", code:`s = Link(1, Link(2, Link(3)))
+
+s → [1 | •]→[2 | •]→[3 | •]→ empty
+     first rest
+
+s.first           → 1
+s.rest            → Link(2, Link(3))
+s.rest.rest.first → 3`},
+ {h:"三種寫法模板", ol:[
+   "計算一個值（總和、長度）：base case 回傳 0；recursive case 回傳「first 的貢獻 + 遞迴處理 rest」。",
+   "建立新的 linked list（map、filter）：base case 回傳 Link.empty；recursive case 回傳 Link(新的值, 遞迴處理 rest)。",
+   "迭代走訪：while s is not Link.empty: 處理 s.first，然後 s = s.rest。"]},
+ {h:"迭代寫法", code:`def sum_link(s):
+    total = 0
+    while s is not Link.empty:
+        total += s.first
+        s = s.rest
+    return total`},
+ {h:"建立新的 vs 就地修改", p:"題目寫「回傳新的 linked list」，就不能改動原本的串列，要用 Link(...) 建立新的。題目寫「mutate」或「in place」，就要直接修改 s.first 或 s.rest，通常不需要回傳值。"}
+],
+"Trees": [
+ {h:"先用一句話理解", p:"Tree 像家族樹或電腦的資料夾結構：每個節點有一個 label，以及零個或多個子樹（branches）。沒有子樹的節點叫做 leaf。"},
+ {h:"畫成圖", code:`t = tree(1, [tree(2), tree(3, [tree(4), tree(5)])])
+
+        1
+       / \\
+      2   3
+         / \\
+        4   5
+
+label(t)                  → 1
+branches(t)               → [tree(2), tree(3, [...])]
+is_leaf(branches(t)[0])   → True`},
+ {h:"標準模板", code:`def f(t):
+    if is_leaf(t):
+        return ...          # 只有 label 的情況
+    results = [f(b) for b in branches(t)]
+    return 組合(label(t), results)`,
+  p:"重點是 [f(b) for b in branches(t)]：對每個子樹遞迴，得到一個結果的 list，再決定怎麼把它們和自己的 label 組合起來。"},
+ {h:"常見的組合方式", ol:[
+   "計數或加總：label(t) + sum(results)。",
+   "找最大值：max([label(t)] + results)。",
+   "收集成 list：把每個結果 list 相加。",
+   "判斷是否存在：for 迴圈逐一檢查，找到就提早 return True。",
+   "建立新的 tree：tree(新的 label, [f(b) for b in branches(t)])。"]},
+ {h:"路徑題的思考方式", p:"find_path(t, x)：如果根就是 x，路徑是 [x]。否則逐一請每個 branch 去找；只要某個 branch 找到了路徑，就在前面加上自己的 label 再回傳。全部都找不到才回傳 None。"}
+],
+"Midterm 2 Review": [
+ {h:"準備重點", ol:[
+   "把 HW 1–4 的每一題從空白檔案重寫一次，不看筆記、不用 AI。",
+   "Tree recursion 練到能直接寫出「用 / 不用」與三個 base case。",
+   "Linked list 和 tree 各練熟一種「計算值」和一種「建立新結構」的題目。",
+   "在 PrairieLearn 上做 practice midterm，熟悉電腦考試的介面。"]}
+],
+"Problem Solving": [
+ {h:"固定的解題流程", ol:[
+   "讀懂題目：輸入是什麼、輸出是什麼？",
+   "寫出 2–3 個小例子，包含最小的情況。",
+   "判斷題型：迴圈、遞迴、tree recursion、HOF？",
+   "套用對應的模板寫出程式。",
+   "用剛才的例子逐行驗證。"]},
+ {h:"卡住時怎麼辦", p:"把問題縮小：先解 n = 0、n = 1 的情況，再想 n = 2 如何利用 n = 1 的答案。這通常就是遞迴關係。"}
+],
+"Mutation": [
+ {h:"先用一句話理解", p:"到目前為止的數字、字串都不會被改變。但 list 和 dict 是可變的（mutable）：同一個物件的內容可以被修改。這時「兩個名稱是否指向同一個物件」就變得非常重要。"},
+ {h:"名稱與物件", code:`a = [1, 2]
+b = a        # b 和 a 指向同一個 list
+c = a[:]     # c 指向一個新的 list，內容相同
+
+a ──┐
+    ├──→ [1, 2]
+b ──┘
+c ─────→ [1, 2]   （另一個物件）
+
+b.append(3)
+a → [1, 2, 3]   c → [1, 2]`},
+ {h:"會修改 vs 會建立新的", ol:[
+   "修改原本的物件：append、extend、pop、remove、insert、s[i] = x、s[a:b] = […]、對 list 使用 +=。",
+   "建立新的物件：s + t、s[:]、list(s)、sorted(s)、list comprehension。"]},
+ {h:"is 與 ==", p:"a == b 比較內容是否相等；a is b 比較是否為同一個物件。上例中 a is b 為 True，a == c 為 True，但 a is c 為 False。"},
+ {h:"函數與可變的參數", p:"把 list 傳進函數時，函數拿到的是同一個物件。在函數裡 s.append(1)，外面的 list 也會改變。但在函數裡寫 s = [1, 2]，只是讓區域名稱 s 改指向新的 list，外面不受影響。"},
+ {h:"nonlocal", p:"在內層函數中要「重新綁定」外層的名稱（例如 count += 1），必須先宣告 nonlocal count，否則會出現 UnboundLocalError。只是修改外層 list 的內容（append），則不需要 nonlocal。"}
+],
+"Classes": [
+ {h:"先用一句話理解", p:"Class 是模具，instance 是用模具做出來的每一個成品。Account 是模具；a = Account('Ada') 做出一個屬於 Ada 的帳戶，b = Account('Bob') 做出另一個，兩者各有自己的餘額。"},
+ {h:"建立 instance 時發生什麼", ol:[
+   "建立一個新的空物件。",
+   "呼叫 __init__(新物件, 'Ada')，參數 self 就是這個新物件。",
+   "__init__ 在 self 上設定 holder、balance 等 instance attribute。",
+   "回傳這個新物件，綁定到名稱 a。"]},
+ {h:"Method 與 self", p:"a.deposit(100) 等同於 Account.deposit(a, 100)。Python 會自動把 a 當作第一個參數 self 傳進去，method 才知道要處理的是「哪一個帳戶」。所以定義 method 時第一個參數一定要寫 self，存取屬性也一定要寫 self.balance。"},
+ {h:"在環境圖中的表示", p:"每個 instance 畫成一個獨立的框，框中列出它自己的屬性與值。class 也畫成一個框，列出 class attribute 與 method。"}
+],
+"Attributes": [
+ {h:"屬性查找規則", ol:[
+   "讀取 obj.name：先找 instance 自己 → 再找它的 class → 再找 base class；都找不到就是 AttributeError。",
+   "寫入 obj.name = value：永遠寫在 instance 自己身上，不會改到 class。"]},
+ {h:"逐步追蹤 self.lives -= 1", code:`class Cat:
+    lives = 9           # class attribute
+    def lose(self):
+        self.lives -= 1
+
+a = Cat()
+a.lose()
+
+self.lives -= 1 等於 self.lives = self.lives - 1
+右邊讀取 self.lives：instance 沒有 → 找 class → 9
+左邊寫入 self.lives：在 instance 上新增 lives = 8
+Cat.lives 仍然是 9`},
+ {h:"Bound method 與 function", p:"a.deposit 是已經綁定好 self 的 bound method，呼叫時只需傳 amount；Account.deposit 是普通函數，呼叫時兩個參數都要自己傳。"}
+],
+"Inheritance": [
+ {h:"先用一句話理解", p:"CheckingAccount 是一種 Account（is-a 關係），大部分行為都一樣，只有手續費和利率不同。繼承讓我們只寫「不同的部分」，其餘自動沿用。"},
+ {h:"查找順序", ol:[
+   "instance 自己的屬性。",
+   "instance 所屬的 class（subclass）。",
+   "base class，再往上一層一層找。"]},
+ {h:"Override 與 super()", p:"subclass 定義了和 base class 同名的 method，就會覆蓋（override）原本的版本。如果新版本還想沿用原本的行為，可以呼叫 super().method_name(...)，例如先加上手續費，再交給原本的 withdraw 處理。"},
+ {h:"self 的陷阱", p:"定義在 base class 的 method 裡呼叫 self.f()，會從 instance「實際所屬」的 class 開始找 f。所以即使程式碼寫在 A 裡，B 的 instance 呼叫時仍可能用到 B 覆蓋過的 f。這是考試很愛考的點。"},
+ {h:"繼承還是組合", p:"「是一種」（is-a）用繼承，例如 CheckingAccount 是一種 Account。「擁有」（has-a）用屬性存放其他物件，例如 Bank 擁有很多 Account，應該把帳戶存在 self.accounts 這個 list 中，而不是讓 Bank 繼承 Account。"}
+],
+"Lazy Evaluation & Iterators": [
+ {h:"先用一句話理解", p:"Iterable 是「可以被逐一走訪的東西」（list、字串、dict、range）。Iterator 是「走訪時用的書籤」，記得目前走到哪裡，而且只能往前、不能倒退。"},
+ {h:"iter 與 next", ol:[
+   "iter(s)：從 iterable 取得一個新的 iterator。",
+   "next(it)：回傳下一個值，並把書籤往前移。",
+   "沒有下一個值時，next 會丟出 StopIteration。"]},
+ {h:"for 迴圈背後做的事", code:`for x in s:
+    print(x)
+
+等同於：
+it = iter(s)
+while True:
+    try:
+        x = next(it)
+    except StopIteration:
+        break
+    print(x)`},
+ {h:"Lazy evaluation", p:"map、filter、zip 回傳的是 iterator，建立時不會計算任何東西，要等到 next 或 list() 取值時才計算。好處是可以處理非常大、甚至無限長的資料，需要多少才算多少。"},
+ {h:"常見陷阱", p:"同一個 iterator 只能走一次，用完就空了。如果需要重複使用，就重新呼叫 iter，或先用 list() 存起來。"}
+],
+"Generators": [
+ {h:"先用一句話理解", p:"Generator function 是「會暫停的函數」。一般函數 return 一次就結束；generator function 每次 yield 交出一個值後就暫停，下次呼叫 next 時，再從暫停的地方繼續往下執行。"},
+ {h:"逐步追蹤 countdown", code:`def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+
+g = countdown(2)   # 函數本體還沒開始執行
+next(g)  → 執行到 yield 2，暫停，回傳 2
+next(g)  → 從 n -= 1 繼續，n = 1，yield 1
+next(g)  → n = 0，迴圈結束，函數結束
+           → StopIteration`},
+ {h:"yield from", p:"yield from other 會把另一個 iterable 的值一個一個交出去，等同於 for x in other: yield x。在遞迴的 generator 中特別好用。"},
+ {h:"遞迴 generator", p:"要逐一產生一棵樹的所有 label、所有路徑，或所有排列組合時，常見寫法是：先 yield 這一層的結果，再對每個子問題 yield from 遞迴呼叫。最常見的錯誤是忘了 yield from，只寫遞迴呼叫，結果只建立了 generator 物件卻沒有交出任何值。"}
+],
+"Efficiency": [
+ {h:"先用一句話理解", p:"效率分析不是量程式跑幾秒，而是看「輸入變大時，需要的步驟數成長得多快」。"},
+ {h:"常見的成長速度", ol:[
+   "Θ(1) 常數：用 index 取值。",
+   "Θ(log n) 對數：每一步把問題減半，例如 n = n // 2。",
+   "Θ(n) 線性：把 list 走過一次。",
+   "Θ(n²) 平方：兩層巢狀迴圈。",
+   "Θ(2ⁿ) 指數：沒有優化的 tree recursion，例如 fib。"]},
+ {h:"如何判斷", p:"找出最內層的工作被執行了幾次，用 n 表示。忽略常數倍數（3n 和 n 一樣是線性）和成長較慢的項（n² + n 看作 n²）。"},
+ {h:"Memoization", p:"fib(5) 會重複計算 fib(3) 兩次、fib(2) 三次。memoization 用一個 dict 記錄已經算過的結果，下次直接查表。這樣每個 n 只算一次，時間從指數降到線性。"}
+],
+"Object Examples & MT3 Review": [
+ {h:"__repr__ 與 __str__", p:"print(obj) 會使用 __str__ 的結果；在互動式直譯器直接輸入 obj，會使用 __repr__ 的結果。兩者都可以在 class 中自訂。"},
+ {h:"Midterm 3 準備重點", ol:[
+   "box-and-pointer 圖：清楚判斷哪些名稱指向同一個 list。",
+   "instance attribute 與 class attribute 的查找與賦值。",
+   "繼承中 self 呼叫的是哪個版本的 method。",
+   "iterator、generator 的 WWPD 題。",
+   "做 Resources 頁面上的過去考題，練習 2 小時的時間分配。"]}
+],
+"Functional Programming": [
+ {h:"先用一句話理解", p:"函數式程式設計是一種寫程式的方式：不修改任何變數，所有計算都是「把輸入轉換成新的輸出」。好處是程式的行為容易預測，也容易測試。"},
+ {h:"Python 與 Gleam 對照", code:`# Python
+def add(a, b):
+    return a + b
+
+// Gleam
+fn add(a: Int, b: Int) -> Int {
+  a + b
+}`},
+ {h:"Gleam 的幾個特點", ol:[
+   "函數最後一個運算式的值就是回傳值，不需要寫 return。",
+   "用 let 綁定名稱，綁定後不能修改。",
+   "沒有 while、for 迴圈，重複的工作用遞迴或 list.map 這類函數完成。",
+   "有靜態型別：Int 與 Float 是不同型別，Float 的運算子要加點，例如 +.、*.。",
+   "Pipe 運算子：x |> f |> g 等同 g(f(x))，讓資料由左到右流動。"]},
+ {h:"學習建議", p:"把 Gleam 的寫法和前面學過的 Python 遞迴、HOF 對照著看，會發現概念完全相同，只是語法不同。這部分的講義尚未公布，細節以課程網站為準。"}
+],
+"Algebraic Data Types": [
+ {h:"先用一句話理解", p:"用型別描述「一個值可能是哪幾種形態之一」。例如 Shape 可能是 Circle，也可能是 Square，而且每一種帶的資料不同。"},
+ {h:"Pattern matching", p:"用 case 依照值實際的形態分別處理，同時把裡面的資料取出來：Circle(r) 這個模式會比對成功並把半徑綁定到 r。Gleam 編譯器會檢查是否每一種形態都處理到了，漏掉就無法編譯。"},
+ {h:"常用的內建型別", p:"Result 表示「成功或失敗」：Ok(值) 或 Error(原因)。這取代了其他語言中丟出例外的做法，強迫呼叫者處理失敗的情況。"},
+ {h:"與 Python 對照", p:"Python 中通常用不同的 class 和 isinstance 判斷形態，漏掉某種情況時要到執行時才會發現。Gleam 則在編譯時就幫你檢查。"}
+],
+"Immutable Data": [
+ {h:"先用一句話理解", p:"Gleam 的 list 結構和 Python 的 linked list 相同：要嘛是空的 []，要嘛是「第一個元素」加上「剩下的 list」。而且它不能被修改，只能建立新的。"},
+ {h:"List 的真正結構", code:`[1, 2, 3]
+等同於
+[1, ..[2, ..[3, ..[]]]]
+
+case xs {
+  [] -> ...             // 空的
+  [first, ..rest] -> ...  // 拆成第一個與剩下的
+}`},
+ {h:"常用的 list 函數", ol:[
+   "list.map(xs, f)：對每個元素套用 f，回傳新的 list。",
+   "list.filter(xs, f)：只保留 f 回傳 True 的元素。",
+   "list.fold(xs, 初始值, f)：從初始值開始，把每個元素逐一累積進結果，例如加總。"]}
+],
+"Interpreters": [
+ {h:"先用一句話理解", p:"直譯器（interpreter）是「執行程式的程式」。你輸入的每一行 Python，都是由 Python 直譯器讀進來、理解結構、再算出結果。"},
+ {h:"直譯器的流程", ol:[
+   "Read：讀入原始碼文字，切成一個個 token（數字、名稱、括號、運算子）。",
+   "Parse：把 token 組成樹狀結構（expression tree）。",
+   "Eval：遞迴地對這棵樹求值。",
+   "Print：顯示結果，然後回到第一步（REPL：read-eval-print loop）。"]},
+ {h:"Eval 的規則", p:"數字直接回傳自己；名稱到環境中查找；call expression 先 eval operator、再 eval 每個 operand，最後 apply。這和第 2 堂課學的求值規則完全相同，只是現在換成由你來實作。"}
+],
+"Coding Agents": [
+ {h:"先用一句話理解", p:"Coding agent 是讓大型語言模型搭配工具（讀檔、寫檔、執行程式、跑測試）的系統。它會反覆「計畫 → 動手 → 觀察結果 → 修正」，直到完成任務。"},
+ {h:"有效使用的原則", ol:[
+   "給清楚的規格：要做什麼、輸入輸出是什麼。",
+   "先寫好測試，讓 agent 有明確的完成標準。",
+   "自己檢查並理解 agent 產生的每一段程式碼。"]},
+ {h:"課程規範", p:"Quiz 和考試禁止使用 AI，平常作業也不可以用 ChatGPT、Copilot 填寫程式碼。這堂課是讓你了解 agent 如何運作，不是讓作業可以交給 AI。"}
+],
+"Browsers & Applications": [
+ {h:"網頁的三個部分", ol:[
+   "HTML：內容與結構，例如標題、段落、按鈕。",
+   "CSS：外觀，例如顏色、字體、排版。",
+   "JavaScript：行為，例如點擊按鈕後要做什麼。"]},
+ {h:"TypeScript", p:"TypeScript 是加上型別的 JavaScript，和 Gleam 一樣能在執行前發現型別錯誤。Project 4 Animator 可以選 Python 或 TypeScript 版本。這部分的講義尚未公布，細節以課程網站為準。"}
+],
+"Tables, SQL & Aggregation": [
+ {h:"先用一句話理解", p:"資料存成表格（table）：每一列（row）是一筆資料，每一欄（column）是一個屬性。SQL 是向表格「提問」的語言：你描述想要什麼結果，資料庫決定如何找出來。"},
+ {h:"查詢實際的執行順序", ol:[
+   "FROM：要用哪些表格（含 JOIN 合併）。",
+   "WHERE：篩選出符合條件的列。",
+   "GROUP BY：把列分組。",
+   "HAVING：篩選出符合條件的組。",
+   "SELECT：選出欄位、計算彙總值。",
+   "ORDER BY：排序；LIMIT：限制筆數。"],
+  p:"寫的順序是 SELECT 在最前面，但實際執行時 SELECT 在很後面。理解這個順序，就能分清楚 WHERE 和 HAVING。"},
+ {h:"例子", code:`dogs(name, fur, height)
+
+-- 每種毛色有幾隻狗，只列出超過 2 隻的
+SELECT fur, COUNT(*) AS n
+FROM dogs
+GROUP BY fur
+HAVING n > 2;`},
+ {h:"JOIN", p:"FROM a, b 會產生兩個表格所有列的組合，再用 WHERE 留下真正相關的配對。同一個表格和自己 JOIN 時，要用別名區分，例如 FROM parents AS a, parents AS b。"},
+ {h:"彙總函數", p:"COUNT(*)、MAX、MIN、SUM、AVG 會把一組列變成一個值。沒有 GROUP BY 時，整個表格算一組。"}
+],
+"Software Testing": [
+ {h:"先用一句話理解", p:"測試是用程式自動確認程式是否正確。寫好測試之後，每次修改程式都能立刻知道有沒有弄壞原本的功能。"},
+ {h:"設計測試的方法", ol:[
+   "一般情況：最典型的輸入。",
+   "邊界情況：0、1、空字串、空 list、最大值。",
+   "特殊情況：負數、重複元素、找不到的情況。"]}
+],
+"Software Tracing": [
+ {h:"讀懂錯誤訊息", p:"Traceback 最後一行告訴你錯誤的類型與原因（例如 TypeError: unsupported operand）；往上看可以找到出錯的檔案和行號，以及是經過哪些函數呼叫走到那裡的。"},
+ {h:"系統化除錯", ol:[
+   "重現錯誤：找到一個一定會出錯的最小輸入。",
+   "縮小範圍：在可疑位置加 print，確認每一步的值是否符合預期。",
+   "修正後，再把這個輸入加進測試，避免同樣的錯誤再次出現。"]}
+]
+};
+
 const ST = {done:"已教完", now:"進行中", next:"尚未開始"};
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -995,13 +1538,14 @@ function render(o){
     <h3>${esc(o.zh)}</h3>
     <p class="en">${esc(o.en)}</p>
     ${o.st?`<div class="status"><i class="dot ${o.st}"></i>${ST[o.st]}${o.quiz?` · 為 ${o.quiz} 範圍`:''}</div>`:''}
-    <p>${esc(o.what)}</p>
+    <p class="summary">${esc(o.what)}</p>
     ${o.goals?`<h4>學完應該能做到 Goals</h4>${list(o.goals)}`:''}
     ${o.subs?`<h4>重點 Key points</h4>${list(o.subs)}`:''}
+    ${o.en && DEEP[o.en] ? `<h4>詳細解說 In depth</h4>${DEEP[o.en].map(sec=>`<section class="deep"><h5>${esc(sec.h)}</h5>${sec.ol?`<ol>${sec.ol.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:''}${sec.code?`<pre><code>${esc(sec.code)}</code></pre>`:''}${sec.p?sec.p.split("\n\n").map(x=>`<p>${esc(x)}</p>`).join(""):''}</section>`).join("")}` : ''}
     ${terms?`<h4>關鍵詞 Key terms</h4><div class="terms">${terms}</div>`:''}
     ${o.code?`<h4>範例 Example</h4><pre><code>${esc(o.code)}</code></pre>`:''}
     ${o.pitfalls?`<h4>常見錯誤 Common mistakes</h4>${list(o.pitfalls,'warn')}`:''}
-    ${o.check?`<h4>自我檢測 Self-check</h4><details class="check"><summary>先自己想，再點開答案</summary><p class="q">${esc(o.check.q)}</p><p class="a">${esc(o.check.a)}</p></details>`:''}
+    ${o.check?`<h4>自我檢測 Self-check</h4><div class="check"><p class="q"><b>題目：</b>${esc(o.check.q)}</p><details><summary>先自己想，再點開答案</summary><p class="a">${esc(o.check.a)}</p></details></div>`:''}
     ${o.practice?`<h4>對應練習 Practice</h4><p style="margin:0">${esc(o.practice)}</p>`:''}
     ${o.proj?`<h4>對應專案 Project</h4><p style="margin:0">${esc(o.proj)}</p>`:''}
     ${o.tip?`<h4>學習提示 Tip</h4><p class="tip">${esc(o.tip)}</p>`:''}

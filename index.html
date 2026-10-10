@@ -266,6 +266,11 @@ footer{margin-top:22px;font-size:12.5px;color:var(--muted);max-width:90ch}
 footer a{color:var(--blue)}
 
 .main > .detail{align-self:start}
+/* wide screens: map and details are two independent scroll panes that fit the window */
+@media (min-width:1181px){
+  #view-map .main > .mapbox,
+  #view-map .main > .detail:not(.fs){height:var(--panel-h, calc(100vh - 140px));max-height:none;overflow:auto;overscroll-behavior:contain;align-self:stretch;top:auto}
+}
 @media (max-width:1180px){
   .main{grid-template-columns:minmax(0,1fr);gap:20px}
   .resizer{display:none}
@@ -2478,7 +2483,19 @@ function show(v){
     document.getElementById("tab-"+x).setAttribute("aria-selected", String(x===v));
   });
   if(v==="practice") renderPractice();
+  if(v==="map") requestAnimationFrame(fitPanels);
 }
+function fitPanels(){
+  const m = document.querySelector("#view-map .main");
+  if(!m || m.offsetParent === null) return;
+  let stacked = false; try { stacked = window.matchMedia("(max-width:1180px)").matches; } catch(e) {}
+  if(stacked){ m.style.removeProperty("--panel-h"); return; }
+  const top = m.getBoundingClientRect().top + window.scrollY;
+  m.style.setProperty("--panel-h", Math.max(420, Math.round(window.innerHeight - top - 16)) + "px");
+}
+window.addEventListener("resize", fitPanels);
+window.addEventListener("load", fitPanels);
+try { document.fonts && document.fonts.ready.then(fitPanels); } catch(e) {}
 VIEWS.forEach(v=>document.getElementById("tab-"+v).addEventListener("click", ()=>{
   show(v);
   try { history.replaceState(null, "", "#"+v); } catch(e) {}
